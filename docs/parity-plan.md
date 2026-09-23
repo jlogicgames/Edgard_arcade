@@ -164,7 +164,7 @@ Adjust `player.gd` constants and rules: held jump, quicksand rules, clamber only
 5. A music autoload or GameManager method with a looped `main_menu.mp3` and volume tweens (2 s in, 1 s out) keyed to menu visibility.
 6. HUD sizing, an FPS label, and a 1 s level-load transition with a fade.
 
-### Phase 7: Input and dev tools (I1, I3)
+### Phase 7: Input and dev tools (I1, I3) — done
 1. Add joypad events to `move_left`, `move_right`, `jump`, `attack` and `interact`; add a `pause` action (Esc and Start), plus Tab and joypad bindings for the `ui_*` actions.
 2. Add a `DevTools` autoload for F1–F5, active in debug builds only (`OS.is_debug_build()`).
 

@@ -18,11 +18,6 @@ func _ready() -> void:
 func _process(_delta: float) -> void:
 	_update_level_time_scale()
 
-func _unhandled_input(event: InputEvent) -> void:
-	if event is InputEventKey and event.pressed and not event.echo and event.keycode == KEY_F1:
-		GameManager.debug_draw = not GameManager.debug_draw
-		get_tree().debug_collisions_hint = GameManager.debug_draw
-
 func _update_level_time_scale() -> void:
 	var player := GameManager.player
 	if player == null:

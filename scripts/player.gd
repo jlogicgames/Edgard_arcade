@@ -135,7 +135,7 @@ func _handle_interact() -> void:
 		get_tree().call_group("actionable_" + current_trigger_id, "perform_action")
 
 func _handle_pause() -> void:
-	if Input.is_action_just_pressed("ui_cancel"):
+	if Input.is_action_just_pressed("pause"):
 		GameManager.toggle_pause()
 
 func _update_wall_clamber() -> void:
@@ -187,7 +187,7 @@ func _update_animation() -> void:
 		sprite.play("idle")
 
 func take_hit() -> void:
-	if is_got_hit or is_reached_checkpoint:
+	if is_got_hit or is_reached_checkpoint or GameManager.invulnerable:
 		return
 	_respawn()
 
