@@ -1,0 +1,123 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://scripts/enemies/bat.gd" id="1"]
+[ext_resource type="Texture2D" path="res://assets/sprites/enemies/Bat.png" id="2"]
+
+[sub_resource type="AtlasTexture" id="BatIdle0"]
+atlas = ExtResource("2")
+region = Rect2(0, 0, 16, 16)
+
+[sub_resource type="AtlasTexture" id="BatIdle1"]
+atlas = ExtResource("2")
+region = Rect2(16, 0, 16, 16)
+
+[sub_resource type="AtlasTexture" id="BatIdle2"]
+atlas = ExtResource("2")
+region = Rect2(32, 0, 16, 16)
+
+[sub_resource type="AtlasTexture" id="BatIdle3"]
+atlas = ExtResource("2")
+region = Rect2(48, 0, 16, 16)
+
+[sub_resource type="AtlasTexture" id="BatIdle4"]
+atlas = ExtResource("2")
+region = Rect2(64, 0, 16, 16)
+
+[sub_resource type="AtlasTexture" id="BatRun0"]
+atlas = ExtResource("2")
+region = Rect2(0, 32, 16, 16)
+
+[sub_resource type="AtlasTexture" id="BatRun1"]
+atlas = ExtResource("2")
+region = Rect2(16, 32, 16, 16)
+
+[sub_resource type="AtlasTexture" id="BatRun2"]
+atlas = ExtResource("2")
+region = Rect2(32, 32, 16, 16)
+
+[sub_resource type="AtlasTexture" id="BatRun3"]
+atlas = ExtResource("2")
+region = Rect2(48, 32, 16, 16)
+
+[sub_resource type="AtlasTexture" id="BatRun4"]
+atlas = ExtResource("2")
+region = Rect2(64, 32, 16, 16)
+
+[sub_resource type="AtlasTexture" id="BatHit0"]
+atlas = ExtResource("2")
+region = Rect2(0, 64, 16, 16)
+
+[sub_resource type="AtlasTexture" id="BatHit1"]
+atlas = ExtResource("2")
+region = Rect2(16, 64, 16, 16)
+
+[sub_resource type="AtlasTexture" id="BatHit2"]
+atlas = ExtResource("2")
+region = Rect2(32, 64, 16, 16)
+
+[sub_resource type="AtlasTexture" id="BatHit3"]
+atlas = ExtResource("2")
+region = Rect2(48, 64, 16, 16)
+
+[sub_resource type="SpriteFrames" id="BatFrames"]
+animations = [{
+"frames": [
+{"duration": 1.0, "texture": SubResource("BatIdle0")},
+{"duration": 1.0, "texture": SubResource("BatIdle1")},
+{"duration": 1.0, "texture": SubResource("BatIdle2")},
+{"duration": 1.0, "texture": SubResource("BatIdle3")},
+{"duration": 1.0, "texture": SubResource("BatIdle4")}
+],
+"loop": true,
+"name": &"idle",
+"speed": 33.0
+}, {
+"frames": [
+{"duration": 1.0, "texture": SubResource("BatRun0")},
+{"duration": 1.0, "texture": SubResource("BatRun1")},
+{"duration": 1.0, "texture": SubResource("BatRun2")},
+{"duration": 1.0, "texture": SubResource("BatRun3")},
+{"duration": 1.0, "texture": SubResource("BatRun4")}
+],
+"loop": true,
+"name": &"run",
+"speed": 33.0
+}, {
+"frames": [
+{"duration": 1.0, "texture": SubResource("BatHit0")},
+{"duration": 1.0, "texture": SubResource("BatHit1")},
+{"duration": 1.0, "texture": SubResource("BatHit2")},
+{"duration": 1.0, "texture": SubResource("BatHit3")}
+],
+"loop": false,
+"name": &"hit",
+"speed": 33.0
+}]
+
+[sub_resource type="CircleShape2D" id="BatBodyShape"]
+radius = 8.0
+
+[sub_resource type="CircleShape2D" id="BatDetectShape"]
+radius = 50.0
+
+[node name="Bat" type="Area2D"]
+script = ExtResource("1")
+collision_layer = 8
+collision_mask = 2
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+position = Vector2(8, 8)
+sprite_frames = SubResource("BatFrames")
+animation = &"idle"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(8, 8)
+shape = SubResource("BatBodyShape")
+
+[node name="DetectionZone" type="Area2D" parent="."]
+collision_layer = 0
+collision_mask = 2
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="DetectionZone"]
+position = Vector2(8, 8)
+shape = SubResource("BatDetectShape")

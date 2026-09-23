@@ -1,0 +1,241 @@
+[gd_scene format=3 uid="uid://b8cgbxlcjiro2"]
+
+[ext_resource type="Script" path="res://scripts/player.gd" id="1"]
+[ext_resource type="Texture2D" path="res://assets/sprites/Player.png" id="2"]
+
+[sub_resource type="AtlasTexture" id="AT_idle0"]
+atlas = ExtResource("2")
+region = Rect2(0, 432, 48, 48)
+
+[sub_resource type="AtlasTexture" id="AT_idle1"]
+atlas = ExtResource("2")
+region = Rect2(48, 432, 48, 48)
+
+[sub_resource type="AtlasTexture" id="AT_idle2"]
+atlas = ExtResource("2")
+region = Rect2(96, 432, 48, 48)
+
+[sub_resource type="AtlasTexture" id="AT_idle3"]
+atlas = ExtResource("2")
+region = Rect2(144, 432, 48, 48)
+
+[sub_resource type="AtlasTexture" id="AT_run0"]
+atlas = ExtResource("2")
+region = Rect2(0, 0, 48, 48)
+
+[sub_resource type="AtlasTexture" id="AT_run1"]
+atlas = ExtResource("2")
+region = Rect2(48, 0, 48, 48)
+
+[sub_resource type="AtlasTexture" id="AT_run2"]
+atlas = ExtResource("2")
+region = Rect2(96, 0, 48, 48)
+
+[sub_resource type="AtlasTexture" id="AT_run3"]
+atlas = ExtResource("2")
+region = Rect2(144, 0, 48, 48)
+
+[sub_resource type="AtlasTexture" id="AT_jump0"]
+atlas = ExtResource("2")
+region = Rect2(0, 384, 48, 48)
+
+[sub_resource type="AtlasTexture" id="AT_fall0"]
+atlas = ExtResource("2")
+region = Rect2(0, 192, 48, 48)
+
+[sub_resource type="AtlasTexture" id="AT_atk0"]
+atlas = ExtResource("2")
+region = Rect2(0, 48, 48, 48)
+
+[sub_resource type="AtlasTexture" id="AT_atk1"]
+atlas = ExtResource("2")
+region = Rect2(48, 48, 48, 48)
+
+[sub_resource type="AtlasTexture" id="AT_atk2"]
+atlas = ExtResource("2")
+region = Rect2(96, 48, 48, 48)
+
+[sub_resource type="AtlasTexture" id="AT_atk3"]
+atlas = ExtResource("2")
+region = Rect2(144, 48, 48, 48)
+
+[sub_resource type="AtlasTexture" id="AT_atk4"]
+atlas = ExtResource("2")
+region = Rect2(192, 48, 48, 48)
+
+[sub_resource type="AtlasTexture" id="AT_atk5"]
+atlas = ExtResource("2")
+region = Rect2(0, 96, 48, 48)
+
+[sub_resource type="AtlasTexture" id="AT_atk6"]
+atlas = ExtResource("2")
+region = Rect2(48, 96, 48, 48)
+
+[sub_resource type="AtlasTexture" id="AT_hit0"]
+atlas = ExtResource("2")
+region = Rect2(0, 192, 48, 48)
+
+[sub_resource type="AtlasTexture" id="AT_hit1"]
+atlas = ExtResource("2")
+region = Rect2(48, 192, 48, 48)
+
+[sub_resource type="AtlasTexture" id="AT_app0"]
+atlas = ExtResource("2")
+region = Rect2(0, 144, 48, 48)
+
+[sub_resource type="AtlasTexture" id="AT_app1"]
+atlas = ExtResource("2")
+region = Rect2(48, 144, 48, 48)
+
+[sub_resource type="AtlasTexture" id="AT_app2"]
+atlas = ExtResource("2")
+region = Rect2(96, 144, 48, 48)
+
+[sub_resource type="AtlasTexture" id="AT_app3"]
+atlas = ExtResource("2")
+region = Rect2(144, 144, 48, 48)
+
+[sub_resource type="AtlasTexture" id="AT_dis0"]
+atlas = ExtResource("2")
+region = Rect2(0, 288, 48, 48)
+
+[sub_resource type="AtlasTexture" id="AT_dis1"]
+atlas = ExtResource("2")
+region = Rect2(48, 288, 48, 48)
+
+[sub_resource type="AtlasTexture" id="AT_dis2"]
+atlas = ExtResource("2")
+region = Rect2(96, 288, 48, 48)
+
+[sub_resource type="AtlasTexture" id="AT_dis3"]
+atlas = ExtResource("2")
+region = Rect2(144, 288, 48, 48)
+
+[sub_resource type="SpriteFrames" id="PlayerFrames"]
+animations = [{
+"frames": [
+{"duration": 1.0, "texture": SubResource("AT_idle0")},
+{"duration": 1.0, "texture": SubResource("AT_idle1")},
+{"duration": 1.0, "texture": SubResource("AT_idle2")},
+{"duration": 1.0, "texture": SubResource("AT_idle3")}
+],
+"loop": true,
+"name": &"idle",
+"speed": 10.0
+}, {
+"frames": [
+{"duration": 1.0, "texture": SubResource("AT_run0")},
+{"duration": 1.0, "texture": SubResource("AT_run1")},
+{"duration": 1.0, "texture": SubResource("AT_run2")},
+{"duration": 1.0, "texture": SubResource("AT_run3")}
+],
+"loop": true,
+"name": &"running",
+"speed": 10.0
+}, {
+"frames": [
+{"duration": 1.0, "texture": SubResource("AT_jump0")}
+],
+"loop": true,
+"name": &"jumping",
+"speed": 10.0
+}, {
+"frames": [
+{"duration": 1.0, "texture": SubResource("AT_fall0")}
+],
+"loop": true,
+"name": &"falling",
+"speed": 10.0
+}, {
+"frames": [
+{"duration": 1.0, "texture": SubResource("AT_atk0")},
+{"duration": 1.0, "texture": SubResource("AT_atk1")},
+{"duration": 1.0, "texture": SubResource("AT_atk2")},
+{"duration": 1.0, "texture": SubResource("AT_atk3")},
+{"duration": 1.0, "texture": SubResource("AT_atk4")},
+{"duration": 1.0, "texture": SubResource("AT_atk5")},
+{"duration": 1.0, "texture": SubResource("AT_atk6")}
+],
+"loop": false,
+"name": &"attacking",
+"speed": 10.0
+}, {
+"frames": [
+{"duration": 1.0, "texture": SubResource("AT_hit0")},
+{"duration": 1.0, "texture": SubResource("AT_hit1")}
+],
+"loop": false,
+"name": &"hit",
+"speed": 10.0
+}, {
+"frames": [
+{"duration": 1.0, "texture": SubResource("AT_app0")},
+{"duration": 1.0, "texture": SubResource("AT_app1")},
+{"duration": 1.0, "texture": SubResource("AT_app2")},
+{"duration": 1.0, "texture": SubResource("AT_app3")}
+],
+"loop": false,
+"name": &"appearing",
+"speed": 10.0
+}, {
+"frames": [
+{"duration": 1.0, "texture": SubResource("AT_dis0")},
+{"duration": 1.0, "texture": SubResource("AT_dis1")},
+{"duration": 1.0, "texture": SubResource("AT_dis2")},
+{"duration": 1.0, "texture": SubResource("AT_dis3")}
+],
+"loop": true,
+"name": &"disappearing",
+"speed": 10.0
+}, {
+"frames": [
+{"duration": 1.0, "texture": SubResource("AT_app0")}
+],
+"loop": true,
+"name": &"climbing",
+"speed": 10.0
+}]
+
+[sub_resource type="CapsuleShape2D" id="PlayerShape"]
+radius = 5.5
+height = 22.0
+
+[sub_resource type="RectangleShape2D" id="AttackShape"]
+size = Vector2(37, 36)
+
+[node name="Player" type="CharacterBody2D"]
+script = ExtResource("1")
+collision_layer = 2
+collision_mask = 1
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+position = Vector2(24, 24)
+sprite_frames = SubResource("PlayerFrames")
+animation = &"idle"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(24, 35)
+shape = SubResource("PlayerShape")
+
+[node name="AttackHitbox" type="Area2D" parent="."]
+collision_layer = 4
+collision_mask = 8
+monitoring = false
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="AttackHitbox"]
+position = Vector2(0, 24)
+shape = SubResource("AttackShape")
+
+[node name="Camera2D" type="Camera2D" parent="."]
+position = Vector2(-24, -24)
+position_smoothing_enabled = true
+position_smoothing_speed = 5.0
+drag_horizontal_enabled = true
+drag_horizontal_offset = 0.2
+limit_left = 0
+limit_top = 0
+limit_bottom = 360
+limit_right = 640
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
+max_polyphony = 3

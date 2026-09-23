@@ -1,0 +1,57 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://scripts/objects/falling_platform.gd" id="1"]
+[ext_resource type="Texture2D" path="res://assets/sprites/objects/FallingOn.png" id="2"]
+
+[sub_resource type="AtlasTexture" id="FPIdle0"]
+atlas = ExtResource("2")
+region = Rect2(0, 0, 32, 10)
+
+[sub_resource type="AtlasTexture" id="FPShake0"]
+atlas = ExtResource("2")
+region = Rect2(32, 0, 32, 10)
+
+[sub_resource type="AtlasTexture" id="FPShake1"]
+atlas = ExtResource("2")
+region = Rect2(64, 0, 32, 10)
+
+[sub_resource type="AtlasTexture" id="FPShake2"]
+atlas = ExtResource("2")
+region = Rect2(96, 0, 32, 10)
+
+[sub_resource type="SpriteFrames" id="FPFrames"]
+animations = [{
+"frames": [
+{"duration": 1.0, "texture": SubResource("FPIdle0")}
+],
+"loop": true,
+"name": &"idle",
+"speed": 5.0
+}, {
+"frames": [
+{"duration": 1.0, "texture": SubResource("FPShake0")},
+{"duration": 1.0, "texture": SubResource("FPShake1")},
+{"duration": 1.0, "texture": SubResource("FPShake2")}
+],
+"loop": true,
+"name": &"shaking",
+"speed": 10.0
+}]
+
+[sub_resource type="RectangleShape2D" id="FPShape"]
+size = Vector2(32, 10)
+
+[node name="FallingPlatform" type="AnimatableBody2D"]
+script = ExtResource("1")
+sync_to_physics = false
+collision_layer = 1
+collision_mask = 0
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+position = Vector2(16, 5)
+sprite_frames = SubResource("FPFrames")
+animation = &"idle"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(16, 5)
+shape = SubResource("FPShape")
