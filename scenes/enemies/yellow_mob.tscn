@@ -1,0 +1,102 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://scripts/enemies/yellow_mob.gd" id="1"]
+[ext_resource type="Texture2D" path="res://assets/sprites/enemies/yellow_mob.png" id="2"]
+
+[sub_resource type="AtlasTexture" id="YMIdle0"]
+atlas = ExtResource("2")
+region = Rect2(0, 160, 48, 32)
+
+[sub_resource type="AtlasTexture" id="YMIdle1"]
+atlas = ExtResource("2")
+region = Rect2(48, 160, 48, 32)
+
+[sub_resource type="AtlasTexture" id="YMIdle2"]
+atlas = ExtResource("2")
+region = Rect2(96, 160, 48, 32)
+
+[sub_resource type="AtlasTexture" id="YMIdle3"]
+atlas = ExtResource("2")
+region = Rect2(144, 160, 48, 32)
+
+[sub_resource type="AtlasTexture" id="YMRun0"]
+atlas = ExtResource("2")
+region = Rect2(0, 32, 48, 32)
+
+[sub_resource type="AtlasTexture" id="YMRun1"]
+atlas = ExtResource("2")
+region = Rect2(48, 32, 48, 32)
+
+[sub_resource type="AtlasTexture" id="YMRun2"]
+atlas = ExtResource("2")
+region = Rect2(96, 32, 48, 32)
+
+[sub_resource type="AtlasTexture" id="YMRun3"]
+atlas = ExtResource("2")
+region = Rect2(144, 32, 48, 32)
+
+[sub_resource type="AtlasTexture" id="YMHit0"]
+atlas = ExtResource("2")
+region = Rect2(0, 128, 48, 32)
+
+[sub_resource type="AtlasTexture" id="YMHit1"]
+atlas = ExtResource("2")
+region = Rect2(48, 128, 48, 32)
+
+[sub_resource type="AtlasTexture" id="YMHit2"]
+atlas = ExtResource("2")
+region = Rect2(96, 128, 48, 32)
+
+[sub_resource type="AtlasTexture" id="YMHit3"]
+atlas = ExtResource("2")
+region = Rect2(144, 128, 48, 32)
+
+[sub_resource type="SpriteFrames" id="YMFrames"]
+animations = [{
+"frames": [
+{"duration": 1.0, "texture": SubResource("YMIdle0")},
+{"duration": 1.0, "texture": SubResource("YMIdle1")},
+{"duration": 1.0, "texture": SubResource("YMIdle2")},
+{"duration": 1.0, "texture": SubResource("YMIdle3")}
+],
+"loop": true,
+"name": &"idle",
+"speed": 20.0
+}, {
+"frames": [
+{"duration": 1.0, "texture": SubResource("YMRun0")},
+{"duration": 1.0, "texture": SubResource("YMRun1")},
+{"duration": 1.0, "texture": SubResource("YMRun2")},
+{"duration": 1.0, "texture": SubResource("YMRun3")}
+],
+"loop": true,
+"name": &"run",
+"speed": 20.0
+}, {
+"frames": [
+{"duration": 1.0, "texture": SubResource("YMHit0")},
+{"duration": 1.0, "texture": SubResource("YMHit1")},
+{"duration": 1.0, "texture": SubResource("YMHit2")},
+{"duration": 1.0, "texture": SubResource("YMHit3")}
+],
+"loop": false,
+"name": &"hit",
+"speed": 20.0
+}]
+
+[sub_resource type="RectangleShape2D" id="YMShape"]
+size = Vector2(14, 26)
+
+[node name="YellowMob" type="CharacterBody2D"]
+script = ExtResource("1")
+collision_layer = 8
+collision_mask = 3
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+position = Vector2(24, 16)
+sprite_frames = SubResource("YMFrames")
+animation = &"idle"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(24, 19)
+shape = SubResource("YMShape")

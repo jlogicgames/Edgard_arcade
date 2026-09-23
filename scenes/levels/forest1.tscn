@@ -1,0 +1,147 @@
+[gd_scene format=4]
+
+[ext_resource type="Script" path="res://scripts/level.gd" id="3_lvlscript"]
+
+[ext_resource type="Texture2D" path="res://assets/sprites/background/sky.png" id="1_tv7da"]
+[ext_resource type="TileSet" path="res://assets/tilesets/forest.tres" id="2_sk7in"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_j53pq"]
+size = Vector2(640, 48)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_s26ca"]
+size = Vector2(48, 16)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_6dr1e"]
+size = Vector2(48, 16)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_0e5an"]
+size = Vector2(32, 16)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_3fvg1"]
+size = Vector2(16, 320)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_fa5cj"]
+size = Vector2(32, 16)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_isu37"]
+size = Vector2(16, 320)
+
+[node name="Level" type="Node2D" unique_id=144887535]
+script = ExtResource("3_lvlscript")
+level_width_px = 640
+
+[node name="Background" type="CanvasLayer" parent="." unique_id=1405926216]
+layer = -1
+
+[node name="Sky" type="TextureRect" parent="Background" unique_id=1043146625]
+anchor_right = 1.0
+anchor_bottom = 1.0
+texture = ExtResource("1_tv7da")
+expand_mode = 1
+stretch_mode = 1
+
+[node name="TileMapLayer" type="TileMapLayer" parent="." unique_id=1618699921]
+tile_map_data = PackedByteArray("AAAAAAAAAAAEAAUAAAAnAAAAAAASAAMAAAAAAAEAAAASAAQAAAAnAAEAAAASAAMAAAAAAAIAAAASAAUAAAAnAAIAAAASAAQAAAAAAAMAAAASAAMAAAAnAAMAAAASAAUAAAAAAAQAAAASAAQAAAAnAAQAAAASAAMAAAAAAAUAAAASAAUAAAAnAAUAAAASAAQAAAAAAAYAAAASAAMAAAAnAAYAAAASAAUAAAAAAAcAAAASAAQAAAAnAAcAAAASAAMAAAAAAAgAAAASAAUAAAAnAAgAAAASAAQAAAAAAAkAAAASAAMAAAAnAAkAAAASAAUAAAAAAAoAAAASAAQAAAAnAAoAAAASAAMAAAAAAAsAAAASAAUAAAAnAAsAAAASAAQAAAAAAAwAAAASAAMAAAAnAAwAAAASAAMAAAAAAA0AAAASAAQAAAAnAA0AAAASAAQAAAAAAA4AAAASAAUAAAAeAA4AAAAMAAEAAAAfAA4AAAANAAEAAAAgAA4AAAAOAAEAAAAnAA4AAAASAAUAAAAAAA8AAAASAAMAAAAeAA8AAAAMAAIAAAAfAA8AAAANAAIAAAAgAA8AAAAOAAIAAAAnAA8AAAASAAMAAAAAABAAAAASAAMAAAAeABAAAAAMAAIAAAAfABAAAAANAAIAAAAgABAAAAAOAAIAAAAnABAAAAASAAMAAAAAABEAAAASAAQAAAAPABEAAAABAAUAAAAQABEAAAACAAUAAAAeABEAAAAMAAIAAAAfABEAAAANAAIAAAAgABEAAAAOAAIAAAAlABEAAAAMAAUAAAAnABEAAAASAAQAAAAAABIAAAASAAUAAAAeABIAAAAMAAIAAAAfABIAAAANAAIAAAAgABIAAAAOAAIAAAAlABIAAAAMAAYAAAAnABIAAAASAAUAAAAAABMAAAASAAYAAAAIABMAAAAEAAUAAAAKABMAAAAFAAEAAAALABMAAAAGAAEAAAAMABMAAAAHAAEAAAARABMAAAAEAAUAAAATABMAAAAFAAEAAAAUABMAAAAGAAEAAAAVABMAAAAHAAEAAAAYABMAAAAGAAYAAAAZABMAAAAHAAYAAAAaABMAAAAIAAYAAAAeABMAAAAMAAIAAAAfABMAAAANAAIAAAAgABMAAAAOAAIAAAAkABMAAAABAAUAAAAlABMAAAACAAUAAAAnABMAAAASAAYAAAAAABQAAAABAAEAAAABABQAAAACAAEAAAACABQAAAACAAEAAAADABQAAAACAAEAAAAEABQAAAACAAEAAAAFABQAAAACAAEAAAAGABQAAAACAAEAAAAHABQAAAACAAEAAAAIABQAAAACAAEAAAAJABQAAAACAAEAAAAKABQAAAACAAEAAAALABQAAAACAAEAAAAMABQAAAACAAEAAAANABQAAAACAAEAAAAOABQAAAACAAEAAAAPABQAAAACAAEAAAAQABQAAAACAAEAAAARABQAAAACAAEAAAASABQAAAACAAEAAAATABQAAAACAAEAAAAUABQAAAACAAEAAAAVABQAAAACAAEAAAAWABQAAAACAAEAAAAXABQAAAACAAEAAAAYABQAAAACAAEAAAAZABQAAAACAAEAAAAaABQAAAACAAEAAAAbABQAAAACAAEAAAAcABQAAAACAAEAAAAdABQAAAACAAEAAAAeABQAAAACAAEAAAAfABQAAAACAAEAAAAgABQAAAACAAEAAAAhABQAAAACAAEAAAAiABQAAAACAAEAAAAjABQAAAACAAEAAAAkABQAAAACAAEAAAAlABQAAAACAAEAAAAmABQAAAACAAEAAAAnABQAAAACAAEAAAAAABUAAAABAAIAAAABABUAAAACAAIAAAACABUAAAACAAIAAAADABUAAAACAAIAAAAEABUAAAACAAIAAAAFABUAAAACAAIAAAAGABUAAAACAAIAAAAHABUAAAACAAIAAAAIABUAAAACAAIAAAAJABUAAAACAAIAAAAKABUAAAACAAIAAAALABUAAAACAAIAAAAMABUAAAACAAIAAAANABUAAAACAAIAAAAOABUAAAACAAIAAAAPABUAAAACAAIAAAAQABUAAAACAAIAAAARABUAAAACAAIAAAASABUAAAACAAIAAAATABUAAAACAAIAAAAUABUAAAACAAIAAAAVABUAAAACAAIAAAAWABUAAAACAAIAAAAXABUAAAACAAIAAAAYABUAAAACAAIAAAAZABUAAAACAAIAAAAaABUAAAACAAIAAAAbABUAAAACAAIAAAAcABUAAAACAAIAAAAdABUAAAACAAIAAAAeABUAAAACAAIAAAAfABUAAAACAAIAAAAgABUAAAACAAIAAAAhABUAAAACAAIAAAAiABUAAAACAAIAAAAjABUAAAACAAIAAAAkABUAAAACAAIAAAAlABUAAAACAAIAAAAmABUAAAACAAIAAAAnABUAAAACAAIAAAAAABYAAAABAAMAAAABABYAAAACAAMAAAACABYAAAACAAMAAAADABYAAAACAAMAAAAEABYAAAACAAMAAAAFABYAAAACAAMAAAAGABYAAAACAAMAAAAHABYAAAACAAMAAAAIABYAAAACAAMAAAAJABYAAAACAAMAAAAKABYAAAACAAMAAAALABYAAAACAAMAAAAMABYAAAACAAMAAAANABYAAAACAAMAAAAOABYAAAACAAMAAAAPABYAAAACAAMAAAAQABYAAAACAAMAAAARABYAAAACAAMAAAASABYAAAACAAMAAAATABYAAAACAAMAAAAUABYAAAACAAMAAAAVABYAAAACAAMAAAAWABYAAAACAAMAAAAXABYAAAACAAMAAAAYABYAAAACAAMAAAAZABYAAAACAAMAAAAaABYAAAACAAMAAAAbABYAAAACAAMAAAAcABYAAAACAAMAAAAdABYAAAACAAMAAAAeABYAAAACAAMAAAAfABYAAAACAAMAAAAgABYAAAACAAMAAAAhABYAAAACAAMAAAAiABYAAAACAAMAAAAjABYAAAACAAMAAAAkABYAAAACAAMAAAAlABYAAAACAAMAAAAmABYAAAACAAMAAAAnABYAAAACAAMAAAA=")
+tile_set = ExtResource("2_sk7in")
+
+[node name="Collisions" type="Node2D" parent="." unique_id=142891703]
+
+[node name="Collision_0" type="StaticBody2D" parent="Collisions" unique_id=203050609]
+position = Vector2(320, 344)
+
+[node name="@CollisionShape2D@2" type="CollisionShape2D" parent="Collisions/Collision_0" unique_id=1454113502]
+shape = SubResource("RectangleShape2D_j53pq")
+
+[node name="Collision_1" type="StaticBody2D" parent="Collisions" unique_id=1571963805]
+position = Vector2(184, 312)
+
+[node name="@CollisionShape2D@3" type="CollisionShape2D" parent="Collisions/Collision_1" unique_id=2024299196]
+shape = SubResource("RectangleShape2D_s26ca")
+
+[node name="Collision_2" type="StaticBody2D" parent="Collisions" unique_id=383462029]
+position = Vector2(328, 312)
+
+[node name="@CollisionShape2D@4" type="CollisionShape2D" parent="Collisions/Collision_2" unique_id=333606378]
+shape = SubResource("RectangleShape2D_6dr1e")
+
+[node name="Collision_3" type="StaticBody2D" parent="Collisions" unique_id=594154266]
+position = Vector2(592, 312)
+
+[node name="@CollisionShape2D@5" type="CollisionShape2D" parent="Collisions/Collision_3" unique_id=494325359]
+shape = SubResource("RectangleShape2D_0e5an")
+
+[node name="Collision_4" type="StaticBody2D" parent="Collisions" unique_id=355249749]
+position = Vector2(8, 160)
+
+[node name="@CollisionShape2D@6" type="CollisionShape2D" parent="Collisions/Collision_4" unique_id=1486901072]
+shape = SubResource("RectangleShape2D_3fvg1")
+
+[node name="Collision_5" type="StaticBody2D" parent="Collisions" unique_id=1251480087]
+position = Vector2(256, 280)
+
+[node name="@CollisionShape2D@7" type="CollisionShape2D" parent="Collisions/Collision_5" unique_id=335263149]
+shape = SubResource("RectangleShape2D_fa5cj")
+one_way_collision = true
+
+[node name="Collision_6" type="StaticBody2D" parent="Collisions" unique_id=1196811590]
+position = Vector2(632, 160)
+
+[node name="@CollisionShape2D@8" type="CollisionShape2D" parent="Collisions/Collision_6" unique_id=128960197]
+shape = SubResource("RectangleShape2D_isu37")
+
+[node name="SpawnPoints" type="Node2D" parent="." unique_id=1648850820]
+
+[node name="Player_0" type="Marker2D" parent="SpawnPoints" unique_id=1195797393]
+position = Vector2(32, 272)
+
+[node name="Checkpoint_1" type="Marker2D" parent="SpawnPoints" unique_id=954846402]
+position = Vector2(592, 272)
+
+[node name="RedMob_2" type="Marker2D" parent="SpawnPoints" unique_id=1558939847]
+position = Vector2(352, 240)
+metadata/offNeg = 10.0
+metadata/offPos = 10.0
+
+[node name="Actionable_3" type="Marker2D" parent="SpawnPoints" unique_id=445933718]
+position = Vector2(240, 224)
+metadata/Intensity = 100
+metadata/type = "Torch"
+metadata/target_id = "Torch1"
+
+[node name="Trigger_4" type="Marker2D" parent="SpawnPoints" unique_id=1587041328]
+position = Vector2(128, 304)
+metadata/target_id = "Torch1"
+
+[node name="Trigger_5" type="Marker2D" parent="SpawnPoints" unique_id=1340196930]
+position = Vector2(272, 304)
+metadata/target_id = "Wall1"
+
+[node name="Actionable_6" type="Marker2D" parent="SpawnPoints" unique_id=1627917793]
+position = Vector2(504, 272)
+metadata/type = "Wall"
+metadata/target_id = "Wall1"
+metadata/wall_width = 48
+metadata/wall_height = 96
+
+[node name="Escalator_7" type="Marker2D" parent="SpawnPoints" unique_id=1507194235]
+position = Vector2(304, 240)
+metadata/offNeg = 3.0
+metadata/offPos = 3.0
+
+[node name="Escalator_8" type="Marker2D" parent="SpawnPoints" unique_id=1394239677]
+position = Vector2(432, 256)
+metadata/isVertical = true
+metadata/offNeg = 2.0
+metadata/offPos = 1.0
+
+[node name="FallingPlatform_9" type="Marker2D" parent="SpawnPoints" unique_id=1228547866]
+position = Vector2(96, 272)
+
+[node name="FallingPlatform_10" type="Marker2D" parent="SpawnPoints" unique_id=1636971894]
+position = Vector2(128, 272)
+
+[node name="FallingPlatform_11" type="Marker2D" parent="SpawnPoints" unique_id=814821330]
+position = Vector2(160, 272)
+
+[node name="FallingPlatform_12" type="Marker2D" parent="SpawnPoints" unique_id=18476782]
+position = Vector2(192, 256)

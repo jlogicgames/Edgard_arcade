@@ -1,0 +1,128 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://scripts/enemies/red_mob.gd" id="1"]
+[ext_resource type="Texture2D" path="res://assets/sprites/enemies/mobs.png" id="2"]
+
+[sub_resource type="AtlasTexture" id="RMIdle0"]
+atlas = ExtResource("2")
+region = Rect2(0, 160, 48, 32)
+
+[sub_resource type="AtlasTexture" id="RMIdle1"]
+atlas = ExtResource("2")
+region = Rect2(48, 160, 48, 32)
+
+[sub_resource type="AtlasTexture" id="RMIdle2"]
+atlas = ExtResource("2")
+region = Rect2(96, 160, 48, 32)
+
+[sub_resource type="AtlasTexture" id="RMIdle3"]
+atlas = ExtResource("2")
+region = Rect2(144, 160, 48, 32)
+
+[sub_resource type="AtlasTexture" id="RMRun0"]
+atlas = ExtResource("2")
+region = Rect2(0, 32, 48, 32)
+
+[sub_resource type="AtlasTexture" id="RMRun1"]
+atlas = ExtResource("2")
+region = Rect2(48, 32, 48, 32)
+
+[sub_resource type="AtlasTexture" id="RMRun2"]
+atlas = ExtResource("2")
+region = Rect2(96, 32, 48, 32)
+
+[sub_resource type="AtlasTexture" id="RMRun3"]
+atlas = ExtResource("2")
+region = Rect2(144, 32, 48, 32)
+
+[sub_resource type="AtlasTexture" id="RMHit0"]
+atlas = ExtResource("2")
+region = Rect2(0, 128, 48, 32)
+
+[sub_resource type="AtlasTexture" id="RMHit1"]
+atlas = ExtResource("2")
+region = Rect2(48, 128, 48, 32)
+
+[sub_resource type="AtlasTexture" id="RMHit2"]
+atlas = ExtResource("2")
+region = Rect2(96, 128, 48, 32)
+
+[sub_resource type="AtlasTexture" id="RMHit3"]
+atlas = ExtResource("2")
+region = Rect2(144, 128, 48, 32)
+
+[sub_resource type="AtlasTexture" id="RMAtk0"]
+atlas = ExtResource("2")
+region = Rect2(0, 64, 48, 32)
+
+[sub_resource type="AtlasTexture" id="RMAtk1"]
+atlas = ExtResource("2")
+region = Rect2(48, 64, 48, 32)
+
+[sub_resource type="AtlasTexture" id="RMAtk2"]
+atlas = ExtResource("2")
+region = Rect2(96, 64, 48, 32)
+
+[sub_resource type="AtlasTexture" id="RMAtk3"]
+atlas = ExtResource("2")
+region = Rect2(144, 64, 48, 32)
+
+[sub_resource type="SpriteFrames" id="RMFrames"]
+animations = [{
+"frames": [
+{"duration": 1.0, "texture": SubResource("RMIdle0")},
+{"duration": 1.0, "texture": SubResource("RMIdle1")},
+{"duration": 1.0, "texture": SubResource("RMIdle2")},
+{"duration": 1.0, "texture": SubResource("RMIdle3")}
+],
+"loop": true,
+"name": &"idle",
+"speed": 10.0
+}, {
+"frames": [
+{"duration": 1.0, "texture": SubResource("RMRun0")},
+{"duration": 1.0, "texture": SubResource("RMRun1")},
+{"duration": 1.0, "texture": SubResource("RMRun2")},
+{"duration": 1.0, "texture": SubResource("RMRun3")}
+],
+"loop": true,
+"name": &"run",
+"speed": 10.0
+}, {
+"frames": [
+{"duration": 1.0, "texture": SubResource("RMHit0")},
+{"duration": 1.0, "texture": SubResource("RMHit1")},
+{"duration": 1.0, "texture": SubResource("RMHit2")},
+{"duration": 1.0, "texture": SubResource("RMHit3")}
+],
+"loop": false,
+"name": &"hit",
+"speed": 10.0
+}, {
+"frames": [
+{"duration": 1.0, "texture": SubResource("RMAtk0")},
+{"duration": 1.0, "texture": SubResource("RMAtk1")},
+{"duration": 1.0, "texture": SubResource("RMAtk2")},
+{"duration": 1.0, "texture": SubResource("RMAtk3")}
+],
+"loop": false,
+"name": &"attack",
+"speed": 5.0
+}]
+
+[sub_resource type="RectangleShape2D" id="RMShape"]
+size = Vector2(14, 26)
+
+[node name="RedMob" type="CharacterBody2D"]
+script = ExtResource("1")
+collision_layer = 8
+collision_mask = 3
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+position = Vector2(24, 16)
+sprite_frames = SubResource("RMFrames")
+animation = &"idle"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(24, 19)
+shape = SubResource("RMShape")

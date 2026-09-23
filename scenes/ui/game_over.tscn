@@ -1,0 +1,41 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://scripts/ui/game_over.gd" id="1"]
+[ext_resource type="FontFile" path="res://assets/fonts/PixelOperator8-Bold.ttf" id="2"]
+[ext_resource type="FontFile" path="res://assets/fonts/PixelOperator8.ttf" id="3"]
+
+[node name="GameOver" type="CanvasLayer"]
+script = ExtResource("1")
+layer = 20
+
+[node name="Panel" type="Panel" parent="."]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -80.0
+offset_top = -55.0
+offset_right = 80.0
+offset_bottom = 55.0
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Panel"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 12.0
+offset_top = 12.0
+offset_right = -12.0
+offset_bottom = -12.0
+theme_override_constants/separation = 12
+
+[node name="GameOverLabel" type="Label" parent="Panel/VBoxContainer"]
+text = "GAME OVER"
+theme_override_fonts/font = ExtResource("2")
+theme_override_font_sizes/font_size = 18
+horizontal_alignment = 1
+
+[node name="RetryButton" type="Button" parent="Panel/VBoxContainer"]
+text = "Try Again"
+theme_override_fonts/font = ExtResource("3")
+theme_override_font_sizes/font_size = 12
