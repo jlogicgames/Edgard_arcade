@@ -4,6 +4,8 @@ const MAX_LIVES := 3
 const MUSIC_FADE_IN := 2.0
 const MUSIC_FADE_OUT := 1.0
 const NATIVE_LANGUAGE_NAMES := {"en": "English", "uk": "Українська"}
+const WINDOWED_SIZE := Vector2i(640, 360)
+const SETTINGS_PATH := "user://settings.cfg"
 
 var coins: int = 0
 var lives: int = MAX_LIVES
@@ -12,6 +14,10 @@ var current_level_index: int = 0
 var invulnerable: bool = false
 var debug_draw: bool = false
 var language: String = "en"
+var fullscreen: bool = true
+# Browsers block audio until a user gesture. True everywhere except web
+# builds, where the start screen (WebStartScreen) flips it on click.
+var audio_unlocked: bool = true
 # Multiplier the level's player and enemies fold into their own delta while
 # a bat is near, so bullet-time stays scoped to the simulation and leaves
 # Engine.time_scale (UI, music, tweens) untouched.
@@ -30,7 +36,10 @@ const LEVELS: Array[String] = [
 
 func _ready() -> void:
 	process_mode = Node.PROCESS_MODE_ALWAYS
+	audio_unlocked = not OS.has_feature("web")
+	_load_settings()
 	TranslationServer.set_locale(language)
+	_apply_window_mode()
 	_setup_menu_music()
 	_setup_fps_counter()
 	_setup_fade_overlay()
@@ -45,9 +54,21 @@ func set_menu_music_active(active: bool) -> void:
 func toggle_language() -> void:
 	language = "uk" if language == "en" else "en"
 	TranslationServer.set_locale(language)
+	_save_settings()
 
 func native_language_name() -> String:
 	return NATIVE_LANGUAGE_NAMES.get(language, language)
+
+func toggle_fullscreen() -> void:
+	set_fullscreen(not fullscreen)
+
+func set_fullscreen(value: bool) -> void:
+	fullscreen = value
+	_apply_window_mode()
+	_save_settings()
+
+func unlock_audio() -> void:
+	audio_unlocked = true
 
 func load_next_level() -> void:
 	current_level_index = (current_level_index + 1) % LEVELS.size()
@@ -94,7 +115,37 @@ func _setup_menu_music() -> void:
 	_menu_music_player.volume_db = linear_to_db(0.0001)
 	add_child(_menu_music_player)
 
+func _load_settings() -> void:
+	var cfg := ConfigFile.new()
+	if cfg.load(SETTINGS_PATH) != OK:
+		return
+	language = cfg.get_value("settings", "language", language)
+	fullscreen = cfg.get_value("settings", "fullscreen", fullscreen)
+
+func _save_settings() -> void:
+	var cfg := ConfigFile.new()
+	cfg.set_value("settings", "language", language)
+	cfg.set_value("settings", "fullscreen", fullscreen)
+	cfg.save(SETTINGS_PATH)
+
+# Fullscreen by default on desktop/mobile (T2); web always runs windowed in
+# the page and never touches DisplayServer. Windowed mode is always a fixed
+# 640x360 window, centred on the current screen — the saved size isn't
+# restored, so every switch back to windowed returns to that size.
+func _apply_window_mode() -> void:
+	if OS.has_feature("web"):
+		return
+	if fullscreen:
+		DisplayServer.window_set_mode(DisplayServer.WINDOW_MODE_FULLSCREEN)
+		return
+	DisplayServer.window_set_mode(DisplayServer.WINDOW_MODE_WINDOWED)
+	DisplayServer.window_set_size(WINDOWED_SIZE)
+	var screen_size := DisplayServer.screen_get_size()
+	DisplayServer.window_set_position((screen_size - WINDOWED_SIZE) / 2)
+
 func _update_menu_music(delta: float) -> void:
+	if not audio_unlocked:
+		return
 	var target := 1.0 if _menu_music_active else 0.0
 	if _menu_music_volume < target:
 		_menu_music_volume = minf(target, _menu_music_volume + delta / MUSIC_FADE_IN)

@@ -1,0 +1,17 @@
+[gd_scene load_steps=3 format=3]
+
+[ext_resource type="Script" path="res://scripts/effects/pause_glitch.gd" id="1"]
+[ext_resource type="Shader" path="res://shaders/chroma_glitch.gdshader" id="2"]
+
+[sub_resource type="ShaderMaterial" id="ChromaGlitchMat"]
+shader = ExtResource("2")
+
+[node name="PauseGlitch" type="CanvasLayer"]
+script = ExtResource("1")
+
+[node name="ColorRect" type="ColorRect" parent="."]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+mouse_filter = 2
+material = SubResource("ChromaGlitchMat")

@@ -144,6 +144,7 @@ func _spawn_objects() -> void:
 
 	add_child((load("res://scenes/ui/hud.tscn") as PackedScene).instantiate())
 	add_child((load("res://scenes/ui/pause_menu.tscn") as PackedScene).instantiate())
+	add_child((load("res://scenes/effects/pause_glitch.tscn") as PackedScene).instantiate())
 
 func _setup_ambience() -> void:
 	match ambience:

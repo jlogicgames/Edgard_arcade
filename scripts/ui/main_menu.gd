@@ -12,6 +12,7 @@ enum Screen { MAIN, ABOUT, OPTIONS }
 @onready var exit_button: Button = $MainPanel/CenterContainer/VBoxContainer/ExitButton
 @onready var about_back_button: Button = $AboutPanel/VBoxContainer/BackButton
 @onready var language_button: Button = $OptionsPanel/VBoxContainer/LanguageButton
+@onready var display_button: Button = $OptionsPanel/VBoxContainer/DisplayButton
 @onready var options_back_button: Button = $OptionsPanel/VBoxContainer/BackButton
 
 var _current_screen: int = Screen.MAIN
@@ -25,7 +26,10 @@ func _ready() -> void:
 	_connect_button(about_back_button, func() -> void: _show_screen(Screen.MAIN))
 	_connect_button(options_back_button, func() -> void: _show_screen(Screen.MAIN))
 	_connect_button(language_button, _on_language_pressed)
+	_connect_button(display_button, _on_display_pressed)
+	display_button.visible = not OS.has_feature("web")
 	_update_language_label()
+	_update_display_label()
 	_show_screen(Screen.MAIN)
 
 func _exit_tree() -> void:
@@ -57,6 +61,19 @@ func _on_language_pressed() -> void:
 
 func _update_language_label() -> void:
 	language_button.text = tr("LANGUAGE_LABEL") + ": " + GameManager.native_language_name()
+
+func _on_display_pressed() -> void:
+	GameManager.toggle_fullscreen()
+	_update_display_label()
+
+func _update_display_label() -> void:
+	var mode_key := "DISPLAY_FULLSCREEN" if GameManager.fullscreen else "DISPLAY_WINDOWED"
+	display_button.text = tr("DISPLAY_LABEL") + ": " + tr(mode_key)
+
+# Called by WebStartScreen after its own Play button is dismissed, so
+# keyboard/gamepad focus lands back on the menu underneath.
+func focus_main() -> void:
+	_show_screen(Screen.MAIN)
 
 func _unhandled_input(event: InputEvent) -> void:
 	if event.is_action_pressed("ui_cancel") and _current_screen != Screen.MAIN:

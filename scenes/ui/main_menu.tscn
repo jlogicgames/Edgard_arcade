@@ -110,9 +110,9 @@ anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
 offset_left = -120.0
-offset_top = -60.0
+offset_top = -80.0
 offset_right = 120.0
-offset_bottom = 60.0
+offset_bottom = 80.0
 theme_override_styles/panel = SubResource("StyleBoxFlat_solid_panel")
 
 [node name="VBoxContainer" type="VBoxContainer" parent="OptionsPanel"]
@@ -135,6 +135,11 @@ horizontal_alignment = 1
 custom_minimum_size = Vector2(200, 26)
 size_flags_horizontal = 4
 text = "LANGUAGE_LABEL"
+
+[node name="DisplayButton" type="Button" parent="OptionsPanel/VBoxContainer"]
+custom_minimum_size = Vector2(200, 26)
+size_flags_horizontal = 4
+text = "DISPLAY_LABEL"
 
 [node name="BackButton" type="Button" parent="OptionsPanel/VBoxContainer"]
 custom_minimum_size = Vector2(140, 24)

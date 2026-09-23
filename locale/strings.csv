@@ -11,6 +11,9 @@ PLAY_AGAIN,Play Again,Грати знову
 PAUSE_MENU,Pause Menu,Меню паузи
 GAME_OVER,Game Over,Гру закінчено
 LANGUAGE_LABEL,Language,Мова
+DISPLAY_LABEL,Display,Дисплей
+DISPLAY_FULLSCREEN,Fullscreen,Повноекранний
+DISPLAY_WINDOWED,Windowed,Віконний
 CONTROLS_HELP,"Use WASD or Arrow Keys for movement.
 J to jump. K to attack. L to interact.
 Collect as many coins as you can and avoid enemies!","Використовуйте WASD або стрілки для руху.

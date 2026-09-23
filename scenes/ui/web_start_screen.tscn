@@ -1,0 +1,26 @@
+[gd_scene load_steps=3 format=3]
+
+[ext_resource type="Script" path="res://scripts/ui/web_start_screen.gd" id="1"]
+[ext_resource type="Theme" path="res://theme/menu_theme.tres" id="2"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_solid_panel"]
+bg_color = Color(0, 0, 0, 1)
+
+[node name="WebStartScreen" type="CanvasLayer"]
+script = ExtResource("1")
+theme = ExtResource("2")
+
+[node name="Panel" type="Panel" parent="."]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+theme_override_styles/panel = SubResource("StyleBoxFlat_solid_panel")
+
+[node name="CenterContainer" type="CenterContainer" parent="Panel"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+
+[node name="PlayButton" type="Button" parent="Panel/CenterContainer"]
+custom_minimum_size = Vector2(180, 26)
+text = "PLAY"
