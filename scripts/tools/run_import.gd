@@ -2,10 +2,13 @@
 ## Run with:  godot --headless --script res://scripts/tools/run_import.gd
 extends SceneTree
 
-const TMX_DIR := "/Users/amerezhanyi/Developer/edgard_in_kimeria/assets/tiles/"
+const TMX_DIR := "res://assets/tiles/"
 const TILE_COLS := 20
+const TmxParser := preload("res://scripts/tools/tmx_parser.gd")
 
-func _init() -> void:
+func _initialize() -> void:
+	# Autoloads (GameManager) are only available once _initialize() runs,
+	# unlike _init(), which fires before the engine adds them to the tree.
 	_import_level("forest-1.tmx", "res://scenes/levels/forest1.tscn", 640)
 	_import_level("forest.tmx",   "res://scenes/levels/forest.tscn",  1280)
 	print("Done.")
@@ -15,7 +18,7 @@ func _init() -> void:
 
 func _import_level(tmx_file: String, out_path: String, level_width_px: int) -> void:
 	print("Parsing: ", TMX_DIR + tmx_file)
-	var parsed := _parse_tmx(TMX_DIR + tmx_file)
+	var parsed := TmxParser.parse(TMX_DIR + tmx_file)
 	if parsed.is_empty():
 		push_error("Failed to parse: " + tmx_file)
 		return
@@ -109,6 +112,8 @@ func _import_level(tmx_file: String, out_path: String, level_width_px: int) -> v
 		marker.position = Vector2(float(obj["x"]), float(obj["y"]))
 		for pk in obj.get("properties", {}).keys():
 			marker.set_meta(pk, obj["properties"][pk])
+		marker.set_meta("tiled_name", obj.get("name", ""))
+		marker.set_meta("tiled_size", Vector2(float(obj.get("width", 16)), float(obj.get("height", 16))))
 		sp_root.add_child(marker)
 		marker.owner = root
 
@@ -136,90 +141,3 @@ func _grp(t: String) -> String:
 		"Platform":  return "platform"
 		"QuickSand": return "quicksand"
 		_:           return "solid"
-
-func _parse_tmx(path: String) -> Dictionary:
-	var xml := XMLParser.new()
-	if xml.open(path) != OK:
-		push_error("Cannot open: " + path)
-		return {}
-
-	var res := {
-		"map_width": 0, "map_height": 0,
-		"tile_data": [] as Array[int],
-		"collision_objects": [],
-		"spawn_objects": [],
-	}
-	var in_layer := false
-	var in_objgrp := false
-	var layer_name := ""
-	var csv_buf := ""
-	var cur_obj: Dictionary = {}
-	var objgrp_offset_y := 0.0
-
-	while xml.read() == OK:
-		match xml.get_node_type():
-			XMLParser.NODE_ELEMENT:
-				var tag := xml.get_node_name()
-				match tag:
-					"map":
-						res["map_width"]  = int(xml.get_named_attribute_value_safe("width"))
-						res["map_height"] = int(xml.get_named_attribute_value_safe("height"))
-					"layer":
-						in_layer = true; layer_name = xml.get_named_attribute_value_safe("name"); csv_buf = ""
-					"objectgroup":
-						in_objgrp = true; layer_name = xml.get_named_attribute_value_safe("name")
-						var offy := xml.get_named_attribute_value_safe("offsety")
-						objgrp_offset_y = float(offy) if offy != "" else 0.0
-					"object":
-						if in_objgrp:
-							var raw_y := float(xml.get_named_attribute_value_safe("y"))
-							var t := xml.get_named_attribute_value_safe("type")
-							var c := xml.get_named_attribute_value_safe("class")
-							cur_obj = {
-								"name": xml.get_named_attribute_value_safe("name"),
-								"type": t if t != "" else c,
-								"x": float(xml.get_named_attribute_value_safe("x")),
-								"y": raw_y + objgrp_offset_y,
-								"width": float(xml.get_named_attribute_value_safe("width")),
-								"height": float(xml.get_named_attribute_value_safe("height")),
-								"layer": layer_name,
-								"properties": {},
-							}
-							# Self-closing <object/> — no NODE_ELEMENT_END fires, add immediately
-							if xml.is_empty():
-								_add_obj(cur_obj, res)
-								cur_obj = {}
-					"property":
-						if not cur_obj.is_empty():
-							var pn := xml.get_named_attribute_value_safe("name")
-							var pv := xml.get_named_attribute_value_safe("value")
-							var pt := xml.get_named_attribute_value_safe("type")
-							match pt:
-								"bool":  cur_obj["properties"][pn] = pv == "true"
-								"int":   cur_obj["properties"][pn] = int(pv)
-								"float": cur_obj["properties"][pn] = float(pv)
-								_:       cur_obj["properties"][pn] = pv
-			XMLParser.NODE_TEXT:
-				if in_layer:
-					csv_buf += xml.get_node_data()
-			XMLParser.NODE_ELEMENT_END:
-				match xml.get_node_name():
-					"layer":
-						if in_layer:
-							for token in csv_buf.strip_edges().split(","):
-								var t := token.strip_edges()
-								if t != "": res["tile_data"].append(int(t))
-						in_layer = false; csv_buf = ""
-					"objectgroup":
-						in_objgrp = false; objgrp_offset_y = 0.0
-					"object":
-						if not cur_obj.is_empty():
-							_add_obj(cur_obj, res)
-							cur_obj = {}
-	return res
-
-func _add_obj(obj: Dictionary, res: Dictionary) -> void:
-	if obj["layer"] == "Collisions":
-		res["collision_objects"].append(obj)
-	elif obj["layer"] == "SpawnPoints":
-		res["spawn_objects"].append(obj)

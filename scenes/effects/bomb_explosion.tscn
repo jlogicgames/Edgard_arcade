@@ -1,0 +1,14 @@
+[gd_scene load_steps=3 format=3]
+
+[ext_resource type="Script" path="res://scripts/effects/bomb_explosion_effect.gd" id="1"]
+[ext_resource type="Shader" path="res://shaders/bomb_explosion.gdshader" id="2"]
+
+[sub_resource type="ShaderMaterial" id="BombExplosionMat"]
+shader = ExtResource("2")
+
+[node name="BombExplosionEffect" type="Node2D"]
+script = ExtResource("1")
+
+[node name="ColorRect" type="ColorRect" parent="."]
+mouse_filter = 2
+material = SubResource("BombExplosionMat")

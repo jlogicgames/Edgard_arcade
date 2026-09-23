@@ -1,7 +1,10 @@
 [gd_scene format=3 uid="uid://c3tbj6wjk4q45"]
 
 [ext_resource type="PackedScene" path="res://scenes/ui/main_menu.tscn" id="1"]
+[ext_resource type="PackedScene" path="res://scenes/ui/web_start_screen.tscn" id="2"]
 
 [node name="Game" type="Node2D"]
 
 [node name="MainMenu" parent="." instance=ExtResource("1")]
+
+[node name="WebStartScreen" parent="." instance=ExtResource("2")]

@@ -15,6 +15,7 @@ var move_dir: float = 1.0
 var got_hit := false
 
 @onready var sprite: AnimatedSprite2D = $AnimatedSprite2D
+@onready var hurtbox: Area2D = $Hurtbox
 
 func _ready() -> void:
 	range_neg = global_position.x - off_neg * TILE_SIZE
@@ -24,6 +25,8 @@ func _ready() -> void:
 func _physics_process(delta: float) -> void:
 	if got_hit:
 		return
+	delta *= GameManager.level_time_scale
+	sprite.speed_scale = GameManager.level_time_scale
 
 	if not is_on_floor():
 		velocity.y = min(velocity.y + GRAVITY * delta, 300.0)
@@ -32,17 +35,14 @@ func _physics_process(delta: float) -> void:
 	if player != null and _is_player_in_range(player):
 		var dir: float = sign(player.global_position.x - global_position.x)
 		move_dir = lerpf(move_dir, dir, 0.1)
+		velocity.x = move_dir * RUN_SPEED * GameManager.level_time_scale
 	else:
-		if global_position.x >= range_pos:
-			move_dir = -1.0
-		elif global_position.x <= range_neg:
-			move_dir = 1.0
+		velocity.x = 0.0
 
-	velocity.x = move_dir * RUN_SPEED
 	sprite.flip_h = move_dir < 0.0
 	move_and_slide()
 	sprite.play("run" if abs(velocity.x) > 1.0 else "idle")
-	_check_stomp(player)
+	_check_player_contact()
 
 func _is_player_in_range(player: Player) -> bool:
 	return player.global_position.x >= range_neg \
@@ -50,18 +50,18 @@ func _is_player_in_range(player: Player) -> bool:
 		and player.global_position.y + 32.0 > global_position.y \
 		and player.global_position.y < global_position.y + 32.0
 
-func _check_stomp(player: Player) -> void:
-	if not player:
+func _check_player_contact() -> void:
+	if got_hit:
 		return
-	for i in get_slide_collision_count():
-		var col := get_slide_collision(i)
-		if col.get_collider() == player:
+	for body in hurtbox.get_overlapping_bodies():
+		if body is Player:
+			var player := body as Player
 			if player.velocity.y > 0.0 and player.global_position.y < global_position.y:
 				player.velocity.y = BOUNCE_HEIGHT
 				_get_hit()
-				return
 			else:
 				player.take_hit()
+			return
 
 func get_hit() -> void:
 	_get_hit()

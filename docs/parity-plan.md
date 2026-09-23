@@ -127,36 +127,36 @@ Phases are ordered so that each one leaves the game playable and verifiable (run
 F5 and walk both levels). Bugs come first, because later phases build on correct data
 and state.
 
-### Phase 1: Fix the data pipeline (L1–L3, L5)
+### Phase 1: Fix the data pipeline (L1–L3, L5) — done
 1. Vendor the `.tmx` and `.tsx` files into `assets/tiles/`. Point `TMX_DIR` at `res://assets/tiles/`, and delete the duplicated parser by making `run_import.gd` call the same code as `import_tmx.gd` (a shared `tmx_parser.gd`).
 2. Write `name`, `width` and `height` into each marker's metadata (`tiled_name`, `tiled_size`).
 3. Update `level.gd` to read `Collectable` kind, Trigger and Actionable `target_id`, and Wall, Trigger and Checkpoint sizes from that metadata. Remove the hand-edited fallbacks.
 4. Re-generate both levels.
 5. Verify: `forest` shows a heart at x = 656. `forest1`'s trigger opens the wall and toggles the torch. Inspecting the markers shows the new metadata.
 
-### Phase 2: Game state and correctness bugs (P1, E1, O1, L4, U9)
+### Phase 2: Game state and correctness bugs (P1, E1, O1, L4, U9) — done
 1. Move `lives` into `GameManager`, together with `coins`, `current_level_index`, `invulnerable`, `debug_draw` and `language`. The player reads and writes lives through GameManager, and `reset()` restores them.
 2. Replace the Bat DetectionZone and `Engine.time_scale` with a per-frame "any bat within 50 px" check in `level.gd`. Scale the level's simulation only: set `process_mode` and use a custom `time_scale` factor that player and enemies multiply into `delta`, and keep `Engine.time_scale` at 1.0 (decided, E1), which also leaves UI tweens and music at normal speed.
 3. Fix `actionable_wall.gd` to disable the **shape**, and make the removal permanent (`queue_free`).
 4. Put the collision debug draw behind the F1 flag.
 5. Make pause → Exit to Menu call a full reset.
 
-### Phase 3: Player feel parity (P2–P10)
+### Phase 3: Player feel parity (P2–P10) — done
 Adjust `player.gd` constants and rules: held jump, quicksand rules, clamber only on the `wall` group, wall-jump vector, attack restrictions and movement freeze, fall-off at y = 380, and respawn facing. Keep 3 deaths (P2). Use a custom camera controller node for the look-ahead.
 
-### Phase 4: Enemy parity (E2–E7)
+### Phase 4: Enemy parity (E2–E7) — done
 1. Give each enemy an Area2D hurtbox on layer 8, and move all player↔enemy contact logic to it (stomp when `player.velocity.y > 0`, otherwise damage).
 2. Make mobs idle until the player is in range, with facing from the lerped direction.
 3. Red mob: ±65 px attack box, damage every frame during its 0.8 s attack, then return to its spawn X (E5). Body contact hurts and stomping kills (E6).
 4. Add the Bat stomp.
 
-### Phase 5: Objects and effects (O2–O9, A1–A3)
+### Phase 5: Objects and effects (O2–O9, A1–A3) — done
 1. Port the three shaders to `res://shaders/*.gdshader`. Create reusable scenes: `shockwave_effect.tscn` (with a colour parameter, reused for the ripple), `bomb_explosion.tscn`, and `fog_overlay.tscn` (a CanvasLayer ColorRect).
 2. Collectable ripple and shockwave; Bomb explosion; FallingPlatform warning torch; hide the Checkpoint rectangle outside debug mode; escalator Actionable support and sprite mirroring; unlit Torch when intensity is 0.
 3. Ambience: `rain.gd`, drawn with `_draw()` from a pooled drop array for forest1; `firefly.gd` with a colour export for forest; fog on forest. Choose ambience per level with a `level.gd` export (`ambience = RAIN | FIREFLIES_FOG`).
 4. Torch particle retune (optional polish).
 
-### Phase 6: Menus, localization and audio (U1–U13)
+### Phase 6: Menus, localization and audio (U1–U13) — done
 1. A `Localization` helper: add the EN and UK strings from `Msg.java` to a Godot translation CSV (`locale/strings.csv`) and use `TranslationServer.set_locale()`. This gives `tr()` in Labels for free. Check or add a Cyrillic font.
 2. A single `ui/menu_screen` pattern: a shared Theme with button styling like the reference (grey buttons, white selection border), `grab_focus()` on show, and hover and focus sounds.
 3. Screens: MainMenu (Play, About, Options, Exit, controls help, hint), About, Options (language), and updated Pause and Game Over screens.
@@ -164,16 +164,16 @@ Adjust `player.gd` constants and rules: held jump, quicksand rules, clamber only
 5. A music autoload or GameManager method with a looped `main_menu.mp3` and volume tweens (2 s in, 1 s out) keyed to menu visibility.
 6. HUD sizing, an FPS label, and a 1 s level-load transition with a fade.
 
-### Phase 7: Input and dev tools (I1, I3)
+### Phase 7: Input and dev tools (I1, I3) — done
 1. Add joypad events to `move_left`, `move_right`, `jump`, `attack` and `interact`; add a `pause` action (Esc and Start), plus Tab and joypad bindings for the `ui_*` actions.
 2. Add a `DevTools` autoload for F1–F5, active in debug builds only (`OS.is_debug_build()`).
 
-### Phase 8: Tickets T1–T3
+### Phase 8: Tickets T1–T3 — done
 1. **T3, web start screen.** Do this first, because Phase 6 starts menu music at launch. When `OS.has_feature("web")` is true, `game.tscn` shows a single-button CanvasLayer ahead of the MainMenu. The music autoload doesn't start playback until that button is pressed. Other builds skip the screen. Verify with a web export (`godot --export-release "Web"`) in a fresh browser tab: music starts only after the click, and there are no autoplay warnings in the console.
 2. **T2, fullscreen default.** Add a `Settings` store in `GameManager` backed by `ConfigFile` at `user://settings.cfg`, which also persists `language` (U3). On startup in non-web builds, apply `DisplayServer.WINDOW_MODE_FULLSCREEN` (or `window_set_mode` from the saved value). Add a "Display: Fullscreen / Windowed" toggle to the Options screen and hide it on web. **Windowed mode is a fixed 640×360 window**, the viewport size defined in `project.godot`. On switching to windowed, call `DisplayServer.window_set_size(Vector2i(640, 360))` and centre the window on the current screen. Window resizing stays enabled, as in the project's current settings, and the saved window size isn't restored: every switch returns to 640×360. The 640×360 `canvas_items` stretch already scales to fullscreen; check that fullscreen stays pixel-crisp on common resolutions such as 1920×1080 (an exact 3×) and 2560×1440 (4×).
 3. **T1, pause glitch.** Port `chroma_glitch.frag` to `shaders/chroma_glitch.gdshader`, a `canvas_item` shader that reads `hint_screen_texture`. **Only the game layer is glitched**, meaning the sky background and the world; the HUD and the pause menu stay crisp. Place a full-rect ColorRect with that material on a CanvasLayer at **layer 5**: above the world (default canvas, layer 0) and the sky (−1), and below the HUD (10) and the pause menu (20). Show it only while `get_tree().paused`, and hide it on resume. `hint_screen_texture` at layer 5 captures only the layers beneath it, so the HUD and menu can't be affected and no manual FBO is needed. If a later UI layer is added below 5, it would get glitched too, so keep every UI CanvasLayer at 10 or above. Uniforms: `intensity`, `shift` and an optional slow `TIME` idle, with `process_mode = ALWAYS` so the idle keeps animating while paused. Check the acceptance criteria against the ticket and the FPS counter.
 
-### Phase 9: Docs
+### Phase 9: Docs — done
 Update `CLAUDE.md` (level setup, collision layers, new autoloads, controls) and add a
 "Deviations from the reference" section listing: P2 three deaths; O4 heart heals; E5 Red mob
 returns to spawn X; E6 Red mob body contact hurts and can be stomped; E2 bat stomp (a Java

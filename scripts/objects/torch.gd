@@ -1,6 +1,7 @@
+class_name Torch
 extends Node2D
 
-@export var intensity: int = 80
+@export var intensity: int = 0
 @export var target_id: String = ""
 
 @onready var flame: CPUParticles2D = $FlameParticles
@@ -9,11 +10,11 @@ extends Node2D
 
 func _ready() -> void:
 	_setup_light()
-	light.energy = intensity / 100.0
-	flame.amount = maxi(4, intensity / 10)
-	embers.amount = maxi(2, intensity / 20)
 	if target_id != "":
 		add_to_group("actionable_" + target_id)
+	# Intensity 0 or absent starts unlit; a burning torch keeps its own
+	# Tiled-authored intensity until something toggles it (see set_lit).
+	_apply_intensity()
 
 func _setup_light() -> void:
 	var grad := Gradient.new()
@@ -29,7 +30,20 @@ func _setup_light() -> void:
 	light.texture = tex
 	light.texture_scale = 3.0
 
+func _apply_intensity() -> void:
+	var lit := intensity > 0
+	flame.emitting = lit
+	embers.emitting = lit
+	light.visible = lit
+	light.energy = intensity / 100.0
+	flame.amount = maxi(4, intensity / 10)
+	embers.amount = maxi(2, intensity / 20)
+
+## Matches the reference's toggleFire: jumps straight to 0 or 200,
+## regardless of the torch's original authored intensity.
+func set_lit(lit: bool) -> void:
+	intensity = 200 if lit else 0
+	_apply_intensity()
+
 func perform_action() -> void:
-	flame.emitting = not flame.emitting
-	embers.emitting = not embers.emitting
-	light.visible = not light.visible
+	set_lit(intensity == 0)

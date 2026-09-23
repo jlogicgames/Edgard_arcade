@@ -4,8 +4,9 @@
 @tool
 extends EditorScript
 
-const TMX_DIR := "/Users/amerezhanyi/Developer/edgard_in_kimeria/assets/tiles/"
+const TMX_DIR := "res://assets/tiles/"
 const TILE_COLS := 20
+const TmxParser := preload("res://scripts/tools/tmx_parser.gd")
 
 func _run() -> void:
 	_import_level("forest-1.tmx", "res://scenes/levels/forest1.tscn", 640)
@@ -18,7 +19,7 @@ func _import_level(tmx_file: String, out_res_path: String, level_width_px: int) 
 	var tmx_path := TMX_DIR + tmx_file
 	print("Parsing: ", tmx_path)
 
-	var parsed := _parse_tmx(tmx_path)
+	var parsed := TmxParser.parse(tmx_path)
 	if parsed.is_empty():
 		push_error("Failed to parse: " + tmx_path)
 		return
@@ -126,6 +127,8 @@ func _import_level(tmx_file: String, out_res_path: String, level_width_px: int) 
 		marker.position = Vector2(ox, oy)
 		for pk in props.keys():
 			marker.set_meta(pk, props[pk])
+		marker.set_meta("tiled_name", obj.get("name", ""))
+		marker.set_meta("tiled_size", Vector2(obj.get("width", 16.0), obj.get("height", 16.0)))
 		spawn_root.add_child(marker)
 		marker.owner = root
 		spawn_idx += 1
@@ -168,100 +171,3 @@ func _collision_group(type: String) -> String:
 		"Platform": return "platform"
 		"QuickSand": return "quicksand"
 		_:        return "solid"
-
-func _parse_tmx(path: String) -> Dictionary:
-	var xml := XMLParser.new()
-	if xml.open(path) != OK:
-		return {}
-
-	var result := {
-		"map_width": 0,
-		"map_height": 0,
-		"tile_data": [] as Array[int],
-		"collision_objects": [],
-		"spawn_objects": [],
-	}
-
-	var in_tile_layer := false
-	var in_objectgroup := false
-	var current_layer_name := ""
-	var csv_buffer := ""
-	var current_obj: Dictionary = {}
-	var obj_group_offset_y := 0.0
-
-	while xml.read() == OK:
-		match xml.get_node_type():
-			XMLParser.NODE_ELEMENT:
-				var tag := xml.get_node_name()
-				match tag:
-					"map":
-						result["map_width"]  = int(xml.get_named_attribute_value_safe("width"))
-						result["map_height"] = int(xml.get_named_attribute_value_safe("height"))
-					"layer":
-						in_tile_layer = true
-						current_layer_name = xml.get_named_attribute_value_safe("name")
-						csv_buffer = ""
-					"objectgroup":
-						in_objectgroup = true
-						current_layer_name = xml.get_named_attribute_value_safe("name")
-						var offy_str := xml.get_named_attribute_value_safe("offsety")
-						obj_group_offset_y = float(offy_str) if offy_str != "" else 0.0
-					"object":
-						if in_objectgroup:
-							var raw_y := float(xml.get_named_attribute_value_safe("y"))
-							current_obj = {
-								"name":   xml.get_named_attribute_value_safe("name"),
-								"type":   xml.get_named_attribute_value_safe("type"),
-								"class_": xml.get_named_attribute_value_safe("class"),
-								"x":      float(xml.get_named_attribute_value_safe("x")),
-								"y":      raw_y + obj_group_offset_y,
-								"width":  float(xml.get_named_attribute_value_safe("width")),
-								"height": float(xml.get_named_attribute_value_safe("height")),
-								"layer":  current_layer_name,
-								"properties": {},
-							}
-							# Merge "class" into "type" if type is empty (Tiled 1.9+)
-							if current_obj["type"] == "" and current_obj["class_"] != "":
-								current_obj["type"] = current_obj["class_"]
-					"property":
-						if not current_obj.is_empty():
-							var pname := xml.get_named_attribute_value_safe("name")
-							var pval  := xml.get_named_attribute_value_safe("value")
-							var ptype := xml.get_named_attribute_value_safe("type")
-							match ptype:
-								"bool":  current_obj["properties"][pname] = pval == "true"
-								"int":   current_obj["properties"][pname] = int(pval)
-								"float": current_obj["properties"][pname] = float(pval)
-								_:       current_obj["properties"][pname] = pval
-
-			XMLParser.NODE_TEXT:
-				if in_tile_layer:
-					csv_buffer += xml.get_node_data()
-
-			XMLParser.NODE_ELEMENT_END:
-				var tag := xml.get_node_name()
-				match tag:
-					"layer":
-						if in_tile_layer:
-							_parse_csv(csv_buffer, result["tile_data"])
-						in_tile_layer = false
-						csv_buffer = ""
-					"objectgroup":
-						in_objectgroup = false
-						obj_group_offset_y = 0.0
-					"object":
-						if not current_obj.is_empty():
-							var layer := current_obj["layer"]
-							if layer == "Collisions":
-								result["collision_objects"].append(current_obj)
-							elif layer == "SpawnPoints":
-								result["spawn_objects"].append(current_obj)
-							current_obj = {}
-
-	return result
-
-func _parse_csv(csv: String, out: Array[int]) -> void:
-	for token in csv.strip_edges().split(","):
-		var t := token.strip_edges()
-		if t != "":
-			out.append(int(t))

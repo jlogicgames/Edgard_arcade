@@ -10,9 +10,7 @@ func _ready() -> void:
 
 func _process(_delta: float) -> void:
 	coin_label.text = str(GameManager.coins)
-	var lives := 0
-	if GameManager.player:
-		lives = maxi(GameManager.player.lives, 0)
+	var lives := maxi(GameManager.lives, 0)
 	if lives != _last_lives:
 		_last_lives = lives
 		_update_lives(lives)
