@@ -21,6 +21,8 @@ func _spawn_objects() -> void:
 			meta[key] = marker.get_meta(key)
 
 		var type := marker.name.split("_")[0]
+		var tiled_name: String = meta.get("tiled_name", "")
+		var tiled_size: Vector2 = meta.get("tiled_size", Vector2(16, 16))
 
 		match type:
 			"Player", "PlayerSpawn":
@@ -35,6 +37,7 @@ func _spawn_objects() -> void:
 			"Checkpoint":
 				var cp := (load("res://scenes/objects/checkpoint.tscn") as PackedScene).instantiate()
 				cp.global_position = pos
+				cp.set("checkpoint_size", tiled_size)
 				add_child(cp)
 
 			"Escalator":
@@ -57,16 +60,13 @@ func _spawn_objects() -> void:
 					var torch := (load("res://scenes/objects/torch.tscn") as PackedScene).instantiate()
 					torch.global_position = pos
 					torch.set("intensity", int(meta.get("Intensity", meta.get("intensity", 80))))
-					if meta.has("target_id"):
-						torch.set("target_id", meta["target_id"])
+					torch.set("target_id", tiled_name)
 					add_child(torch)
 				elif sub_type == "Wall":
 					var wall := (load("res://scenes/objects/actionable_wall.tscn") as PackedScene).instantiate()
 					wall.global_position = pos
-					wall.set("target_id", meta.get("target_id", marker.name.split("_")[0]))
-					var ww: float = float(meta.get("wall_width", 16))
-					var wh: float = float(meta.get("wall_height", 16))
-					wall.set("wall_size", Vector2(ww, wh))
+					wall.set("target_id", tiled_name)
+					wall.set("wall_size", tiled_size)
 					add_child(wall)
 
 			"Torch":
@@ -78,16 +78,15 @@ func _spawn_objects() -> void:
 			"Trigger":
 				var trig := (load("res://scenes/objects/trigger.tscn") as PackedScene).instantiate()
 				trig.global_position = pos
-				trig.set("target_id", meta.get("target_id", marker.name))
+				trig.set("target_id", tiled_name)
+				trig.set("trigger_size", tiled_size)
 				add_child(trig)
 
 			"Wall":
 				var wall := (load("res://scenes/objects/actionable_wall.tscn") as PackedScene).instantiate()
 				wall.global_position = pos
-				wall.set("target_id", meta.get("target_id", ""))
-				var ww: float = float(meta.get("wall_width", 16))
-				var wh: float = float(meta.get("wall_height", 16))
-				wall.set("wall_size", Vector2(ww, wh))
+				wall.set("target_id", tiled_name)
+				wall.set("wall_size", tiled_size)
 				add_child(wall)
 
 			"RedMob":
@@ -115,7 +114,7 @@ func _spawn_objects() -> void:
 			"Collectable":
 				var col := (load("res://scenes/objects/collectable.tscn") as PackedScene).instantiate()
 				col.global_position = pos
-				col.set("collectable_type", meta.get("collectable_type", "Coin"))
+				col.set("collectable_type", tiled_name if tiled_name != "" else "Coin")
 				add_child(col)
 
 			"Bomb":
