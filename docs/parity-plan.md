@@ -127,7 +127,7 @@ Phases are ordered so that each one leaves the game playable and verifiable (run
 F5 and walk both levels). Bugs come first, because later phases build on correct data
 and state.
 
-### Phase 1: Fix the data pipeline (L1–L3, L5)
+### Phase 1: Fix the data pipeline (L1–L3, L5) — done
 1. Vendor the `.tmx` and `.tsx` files into `assets/tiles/`. Point `TMX_DIR` at `res://assets/tiles/`, and delete the duplicated parser by making `run_import.gd` call the same code as `import_tmx.gd` (a shared `tmx_parser.gd`).
 2. Write `name`, `width` and `height` into each marker's metadata (`tiled_name`, `tiled_size`).
 3. Update `level.gd` to read `Collectable` kind, Trigger and Actionable `target_id`, and Wall, Trigger and Checkpoint sizes from that metadata. Remove the hand-edited fallbacks.
