@@ -150,7 +150,7 @@ Adjust `player.gd` constants and rules: held jump, quicksand rules, clamber only
 3. Red mob: ±65 px attack box, damage every frame during its 0.8 s attack, then return to its spawn X (E5). Body contact hurts and stomping kills (E6).
 4. Add the Bat stomp.
 
-### Phase 5: Objects and effects (O2–O9, A1–A3)
+### Phase 5: Objects and effects (O2–O9, A1–A3) — done
 1. Port the three shaders to `res://shaders/*.gdshader`. Create reusable scenes: `shockwave_effect.tscn` (with a colour parameter, reused for the ripple), `bomb_explosion.tscn`, and `fog_overlay.tscn` (a CanvasLayer ColorRect).
 2. Collectable ripple and shockwave; Bomb explosion; FallingPlatform warning torch; hide the Checkpoint rectangle outside debug mode; escalator Actionable support and sprite mirroring; unlit Torch when intensity is 0.
 3. Ambience: `rain.gd`, drawn with `_draw()` from a pooled drop array for forest1; `firefly.gd` with a colour export for forest; fog on forest. Choose ambience per level with a `level.gd` export (`ambience = RAIN | FIREFLIES_FOG`).

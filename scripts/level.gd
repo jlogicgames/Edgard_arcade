@@ -1,7 +1,10 @@
 class_name Level
 extends Node2D
 
+enum Ambience { NONE, RAIN, FIREFLIES_FOG }
+
 @export var level_width_px: int = 640
+@export var ambience: Ambience = Ambience.NONE
 
 @onready var spawn_root: Node2D = $SpawnPoints
 
@@ -10,6 +13,7 @@ func _ready() -> void:
 	get_tree().debug_collisions_hint = GameManager.debug_draw
 	_spawn_objects()
 	_connect_quicksand()
+	_setup_ambience()
 
 func _process(_delta: float) -> void:
 	_update_level_time_scale()
@@ -66,6 +70,7 @@ func _spawn_objects() -> void:
 				esc.set("is_vertical", meta.get("isVertical", false))
 				esc.set("off_neg", float(meta.get("offNeg", meta.get("off_neg", 0))))
 				esc.set("off_pos", float(meta.get("offPos", meta.get("off_pos", 0))))
+				esc.set("target_id", tiled_name)
 				add_child(esc)
 
 			"FallingPlatform":
@@ -79,7 +84,7 @@ func _spawn_objects() -> void:
 				if sub_type == "Torch":
 					var torch := (load("res://scenes/objects/torch.tscn") as PackedScene).instantiate()
 					torch.global_position = pos
-					torch.set("intensity", int(meta.get("Intensity", meta.get("intensity", 80))))
+					torch.set("intensity", int(meta.get("Intensity", meta.get("intensity", 0))))
 					torch.set("target_id", tiled_name)
 					add_child(torch)
 				elif sub_type == "Wall":
@@ -92,7 +97,7 @@ func _spawn_objects() -> void:
 			"Torch":
 				var torch := (load("res://scenes/objects/torch.tscn") as PackedScene).instantiate()
 				torch.global_position = pos
-				torch.set("intensity", int(meta.get("Intensity", meta.get("intensity", 80))))
+				torch.set("intensity", int(meta.get("Intensity", meta.get("intensity", 0))))
 				add_child(torch)
 
 			"Trigger":
@@ -144,6 +149,20 @@ func _spawn_objects() -> void:
 
 	add_child((load("res://scenes/ui/hud.tscn") as PackedScene).instantiate())
 	add_child((load("res://scenes/ui/pause_menu.tscn") as PackedScene).instantiate())
+
+func _setup_ambience() -> void:
+	match ambience:
+		Ambience.RAIN:
+			var rain := (load("res://scenes/effects/rain.tscn") as PackedScene).instantiate()
+			rain.set("level_width", float(level_width_px))
+			rain.set("level_height", 360.0)
+			add_child(rain)
+		Ambience.FIREFLIES_FOG:
+			for i in 24:
+				var fly := (load("res://scenes/effects/firefly.tscn") as PackedScene).instantiate()
+				fly.set("area", Vector2(level_width_px, 360.0))
+				add_child(fly)
+			add_child((load("res://scenes/effects/fog_overlay.tscn") as PackedScene).instantiate())
 
 func _connect_quicksand() -> void:
 	var player := GameManager.player

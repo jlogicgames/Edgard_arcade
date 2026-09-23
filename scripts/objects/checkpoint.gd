@@ -13,7 +13,12 @@ func _ready() -> void:
 	# shape is centred on its own transform, so offset it by half the size.
 	shape.position = checkpoint_size * 0.5
 	color_rect.size = checkpoint_size
+	color_rect.visible = GameManager.debug_draw
 	body_entered.connect(_on_body_entered)
+
+func _process(_delta: float) -> void:
+	# Invisible in the reference; only shown under the F1 debug toggle.
+	color_rect.visible = GameManager.debug_draw
 
 func _on_body_entered(body: Node2D) -> void:
 	if body is Player:

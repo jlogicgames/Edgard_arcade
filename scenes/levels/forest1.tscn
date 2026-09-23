@@ -27,6 +27,7 @@ size = Vector2(16, 320)
 
 [node name="Level" type="Node2D" unique_id=252858530]
 script = ExtResource("1_sk7in")
+ambience = 1
 
 [node name="Background" type="CanvasLayer" parent="." unique_id=38049023]
 layer = -1
