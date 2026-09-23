@@ -144,7 +144,7 @@ and state.
 ### Phase 3: Player feel parity (P2–P10) — done
 Adjust `player.gd` constants and rules: held jump, quicksand rules, clamber only on the `wall` group, wall-jump vector, attack restrictions and movement freeze, fall-off at y = 380, and respawn facing. Keep 3 deaths (P2). Use a custom camera controller node for the look-ahead.
 
-### Phase 4: Enemy parity (E2–E7)
+### Phase 4: Enemy parity (E2–E7) — done
 1. Give each enemy an Area2D hurtbox on layer 8, and move all player↔enemy contact logic to it (stomp when `player.velocity.y > 0`, otherwise damage).
 2. Make mobs idle until the player is in range, with facing from the lerped direction.
 3. Red mob: ±65 px attack box, damage every frame during its 0.8 s attack, then return to its spawn X (E5). Body contact hurts and stomping kills (E6).

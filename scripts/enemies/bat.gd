@@ -49,6 +49,13 @@ func _physics_process(delta: float) -> void:
 	sprite.play("run" if abs(move_dir) > 0.0 else "idle")
 
 func _on_player_entered(body: Node2D) -> void:
+	if is_dead:
+		return
+	if body is Player:
+		var player := body as Player
+		if player.velocity.y > 0.0 and player.global_position.y < global_position.y:
+			get_hit()
+			return
 	if body.has_method("take_hit"):
 		body.take_hit()
 
@@ -57,6 +64,7 @@ func get_hit() -> void:
 		return
 	is_dead = true
 	monitoring = false
+	GameManager.play_sfx("res://assets/sounds/bounce.wav")
 	sprite.play("hit")
 	await sprite.animation_finished
 	queue_free()
