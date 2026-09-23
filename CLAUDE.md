@@ -62,7 +62,8 @@ The `TileSet` resource is at `assets/tilesets/forest.tres`. The tileset image is
 | `scenes/objects/collectable.tscn` | `scripts/objects/collectable.gd` | Coins and hearts |
 | `scenes/objects/checkpoint.tscn` | `scripts/objects/checkpoint.gd` | Triggers level transition |
 | `scenes/objects/bomb.tscn` | `scripts/objects/bomb.gd` | Hazard, triggers respawn |
-| `scripts/game_manager.gd` | autoload | Coins, lives, level index, pause, sfx |
+| `scripts/game_manager.gd` | autoload | Coins, lives, level index, pause, settings, menu music, FPS counter, level-load fade |
+| `scripts/dev_tools.gd` | autoload | F1–F5 debug hotkeys (debug build only) |
 
 ### Collision layers
 | Layer | Value | Users |
@@ -70,12 +71,12 @@ The `TileSet` resource is at `assets/tilesets/forest.tres`. The tileset image is
 | World (solid ground) | 1 | StaticBody2D floors/walls, AnimatableBody2D platforms |
 | Player | 2 | Player CharacterBody2D |
 | Attack hitbox | 4 | Player AttackHitbox Area2D |
-| Enemies | 8 | Bat Area2D, YellowMob/RedMob CharacterBody2D |
+| Enemies (hurtbox) | 8 | Bat/YellowMob/RedMob hurtbox Area2D (layer=8, mask=2), plus each mob's own body Area2D/CharacterBody2D (mask=1, world only) |
 
 - Player mask=1 (collides with world)
-- Enemies mask=1 (collide with world), Bat detection zone mask=2
-- Attack hitbox mask=8 (hits enemies)
+- Attack hitbox mask=8 (hits enemy hurtboxes)
 - Collectables/checkpoints mask=2 (detect player)
+- Enemy hurtboxes (layer 8) detect the player independently of `move_and_slide`, so stomp/contact register even on an idle mob (see E7 in `docs/parity-plan.md`)
 
 ### Spawning system
 Levels have a `SpawnPoints` Node2D with `Marker2D` children. Each marker's name prefix (`PlayerSpawn_0`, `Bat_0`, etc.) determines which scene to instantiate. Properties are stored as node metadata (set by import tool, editable in Inspector → Metadata). `scripts/level.gd` spawns all entities in `_ready()`.
@@ -83,7 +84,18 @@ Levels have a `SpawnPoints` Node2D with `Marker2D` children. Each marker's name 
 ### Physics
 - Gravity: 588 px/s² (set in Project Settings → Physics 2D and in player/enemy scripts as `9.8 × 60`)
 - Player: `WALK_SPEED=100`, `JUMP_FORCE=-260`, `TERMINAL_VELOCITY=300`
-- Bat bullet-time: `Engine.time_scale = 0.5` when player within 50px, reset on exit
+- Bat bullet-time: `level.gd` scales a per-level `level_time_scale` factor (multiplied into `delta` by player/enemies) to 0.5 when the player is within 50px of any bat, and back to 1.0 otherwise, recomputed every frame. `Engine.time_scale` stays at 1.0, so UI, music fades and menu screens are never affected.
+
+### Controls
+| Action | Keyboard | Gamepad |
+|---|---|---|
+| Move | A/D or Left/Right arrows | Left stick / D-pad |
+| Jump (held = auto-hop) | J | South (A) |
+| Attack | K | West (X) / East (B) |
+| Interact | E | North (Y) |
+| Pause | Esc | Start |
+
+Dev hotkeys (`scripts/dev_tools.gd`, debug builds only): **F1** toggle hitbox gizmos, **F2** toggle invulnerability, **F3** spawn a shockwave/ripple at the player, **F4** advance to the next level, **F5** trigger the checkpoint.
 
 ## GDScript conventions
 
@@ -105,3 +117,16 @@ All from `../edgard_in_kimeria/assets/` or original Godot project:
 - `assets/sounds/` — jump, coin, hurt, bounce, collect, disappear, explosion
 
 **Texture filter must be Nearest** on all sprites — do not change to Linear.
+
+## Deviations from the reference
+
+This port intentionally differs from the Java/libGDX reference (`../edgard_in_kimeria_libgdx`) in a few places. See `docs/parity-plan.md` for the full gap analysis and decision log.
+
+- **3 deaths before game over**, one per heart in the HUD. The reference's 4th-death behaviour comes from an off-by-one that its missing lives counter hides.
+- **Heart pickups grant +1 life**, capped at 3, plus the shockwave effect. The reference's Heart gives no life.
+- **Red mob returns to its spawn X** after an attack, instead of the reference's always-rightward `position.x += 300`.
+- **Red mob body contact hurts the player, and stomping kills it** — the same rule as the Yellow mob. The reference's player never checks for Red mob contact/stomp at all.
+- **Bat stomp** (landing on a bat from above kills it) follows the Java reference; the original Flutter version makes any bat contact lethal.
+- **Coyote time** uses a fixed 0.15s timer instead of the reference's `velocity.y > 147` threshold.
+- **Bomb explosion sound** uses `explosion.wav` instead of the reference's `bounce` sound.
+- **Camera** keeps Godot's level-boundary limits in addition to the reference's directional look-ahead.
