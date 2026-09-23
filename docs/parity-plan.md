@@ -156,7 +156,7 @@ Adjust `player.gd` constants and rules: held jump, quicksand rules, clamber only
 3. Ambience: `rain.gd`, drawn with `_draw()` from a pooled drop array for forest1; `firefly.gd` with a colour export for forest; fog on forest. Choose ambience per level with a `level.gd` export (`ambience = RAIN | FIREFLIES_FOG`).
 4. Torch particle retune (optional polish).
 
-### Phase 6: Menus, localization and audio (U1–U13)
+### Phase 6: Menus, localization and audio (U1–U13) — done
 1. A `Localization` helper: add the EN and UK strings from `Msg.java` to a Godot translation CSV (`locale/strings.csv`) and use `TranslationServer.set_locale()`. This gives `tr()` in Labels for free. Check or add a Cyrillic font.
 2. A single `ui/menu_screen` pattern: a shared Theme with button styling like the reference (grey buttons, white selection border), `grab_focus()` on show, and hover and focus sounds.
 3. Screens: MainMenu (Play, About, Options, Exit, controls help, hint), About, Options (language), and updated Pause and Game Over screens.

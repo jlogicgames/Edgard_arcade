@@ -1,47 +1,154 @@
-[gd_scene format=3]
+[gd_scene load_steps=6 format=3]
 
 [ext_resource type="Script" path="res://scripts/ui/main_menu.gd" id="1"]
-[ext_resource type="FontFile" path="res://assets/fonts/PixelOperator8-Bold.ttf" id="2"]
-[ext_resource type="FontFile" path="res://assets/fonts/PixelOperator8.ttf" id="3"]
+[ext_resource type="FontVariation" path="res://assets/fonts/ui_font_bold.tres" id="2"]
+[ext_resource type="Theme" path="res://theme/menu_theme.tres" id="4"]
+[ext_resource type="PackedScene" path="res://scenes/ui/menu_backdrop.tscn" id="5"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_solid_panel"]
+bg_color = Color(0, 0, 0, 0.94)
 
 [node name="MainMenu" type="CanvasLayer"]
 script = ExtResource("1")
 layer = 20
+theme = ExtResource("4")
 
-[node name="Panel" type="Panel" parent="."]
+[node name="MenuBackdrop" parent="." instance=ExtResource("5")]
+
+[node name="MainPanel" type="Panel" parent="."]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+
+[node name="CenterContainer" type="CenterContainer" parent="MainPanel"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MainPanel/CenterContainer"]
+theme_override_constants/separation = 10
+alignment = 1
+
+[node name="TitleLabel" type="Label" parent="MainPanel/CenterContainer/VBoxContainer"]
+text = "TITLE"
+theme_override_fonts/font = ExtResource("2")
+theme_override_font_sizes/font_size = 18
+horizontal_alignment = 1
+
+[node name="ControlsLabel" type="Label" parent="MainPanel/CenterContainer/VBoxContainer"]
+custom_minimum_size = Vector2(420, 0)
+text = "CONTROLS_HELP"
+theme_override_font_sizes/font_size = 9
+horizontal_alignment = 1
+autowrap_mode = 2
+
+[node name="ButtonSpacer" type="Control" parent="MainPanel/CenterContainer/VBoxContainer"]
+custom_minimum_size = Vector2(0, 6)
+
+[node name="PlayButton" type="Button" parent="MainPanel/CenterContainer/VBoxContainer"]
+custom_minimum_size = Vector2(180, 26)
+text = "PLAY"
+
+[node name="AboutButton" type="Button" parent="MainPanel/CenterContainer/VBoxContainer"]
+custom_minimum_size = Vector2(180, 26)
+text = "ABOUT"
+
+[node name="OptionsButton" type="Button" parent="MainPanel/CenterContainer/VBoxContainer"]
+custom_minimum_size = Vector2(180, 26)
+text = "OPTIONS"
+
+[node name="ExitButton" type="Button" parent="MainPanel/CenterContainer/VBoxContainer"]
+custom_minimum_size = Vector2(180, 26)
+text = "EXIT"
+
+[node name="AboutPanel" type="Panel" parent="."]
+visible = false
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -160.0
+offset_top = -90.0
+offset_right = 160.0
+offset_bottom = 90.0
+theme_override_styles/panel = SubResource("StyleBoxFlat_solid_panel")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="AboutPanel"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 14.0
+offset_top = 14.0
+offset_right = -14.0
+offset_bottom = -14.0
+theme_override_constants/separation = 10
+
+[node name="TitleLabel" type="Label" parent="AboutPanel/VBoxContainer"]
+text = "ABOUT"
+theme_override_fonts/font = ExtResource("2")
+theme_override_font_sizes/font_size = 16
+horizontal_alignment = 1
+
+[node name="BodyLabel" type="Label" parent="AboutPanel/VBoxContainer"]
+size_flags_vertical = 3
+text = "ABOUT_BODY"
+theme_override_font_sizes/font_size = 9
+horizontal_alignment = 1
+autowrap_mode = 2
+
+[node name="BackButton" type="Button" parent="AboutPanel/VBoxContainer"]
+custom_minimum_size = Vector2(140, 24)
+size_flags_horizontal = 4
+text = "BACK"
+
+[node name="OptionsPanel" type="Panel" parent="."]
+visible = false
 anchors_preset = 8
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
 offset_left = -120.0
-offset_top = -80.0
+offset_top = -60.0
 offset_right = 120.0
-offset_bottom = 80.0
+offset_bottom = 60.0
+theme_override_styles/panel = SubResource("StyleBoxFlat_solid_panel")
 
-[node name="VBoxContainer" type="VBoxContainer" parent="Panel"]
+[node name="VBoxContainer" type="VBoxContainer" parent="OptionsPanel"]
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = 16.0
-offset_top = 16.0
-offset_right = -16.0
-offset_bottom = -16.0
-theme_override_constants/separation = 16
+offset_left = 14.0
+offset_top = 14.0
+offset_right = -14.0
+offset_bottom = -14.0
+theme_override_constants/separation = 10
 
-[node name="TitleLabel" type="Label" parent="Panel/VBoxContainer"]
-text = "Edgard in Kimeria"
+[node name="TitleLabel" type="Label" parent="OptionsPanel/VBoxContainer"]
+text = "OPTIONS"
 theme_override_fonts/font = ExtResource("2")
-theme_override_font_sizes/font_size = 18
+theme_override_font_sizes/font_size = 16
 horizontal_alignment = 1
 
-[node name="ControlsLabel" type="Label" parent="Panel/VBoxContainer"]
-text = "A/D = Move   J = Jump   K = Attack   L = Interact"
-theme_override_fonts/font = ExtResource("3")
-theme_override_font_sizes/font_size = 9
-horizontal_alignment = 1
+[node name="LanguageButton" type="Button" parent="OptionsPanel/VBoxContainer"]
+custom_minimum_size = Vector2(200, 26)
+size_flags_horizontal = 4
+text = "LANGUAGE_LABEL"
 
-[node name="StartButton" type="Button" parent="Panel/VBoxContainer"]
-text = "Start Game"
-theme_override_fonts/font = ExtResource("3")
-theme_override_font_sizes/font_size = 12
+[node name="BackButton" type="Button" parent="OptionsPanel/VBoxContainer"]
+custom_minimum_size = Vector2(140, 24)
+size_flags_horizontal = 4
+text = "BACK"
+
+[node name="HintLabel" type="Label" parent="."]
+anchors_preset = 12
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = -16.0
+offset_bottom = -4.0
+theme_override_font_sizes/font_size = 8
+theme_override_colors/font_color = Color(0.8, 0.8, 0.8, 1)
+text = "MENU_HINT"
+horizontal_alignment = 1

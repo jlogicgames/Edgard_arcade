@@ -1,0 +1,30 @@
+keys,en,uk
+TITLE,Edgard in Kimeria,Едгард у Кімерії
+PLAY,Play,Грати
+ABOUT,About,Про гру
+OPTIONS,Options,Налаштування
+EXIT,Exit,Вихід
+BACK,Back,Назад
+RESUME,Resume,Продовжити
+EXIT_TO_MENU,Exit to Menu,Вийти в меню
+PLAY_AGAIN,Play Again,Грати знову
+PAUSE_MENU,Pause Menu,Меню паузи
+GAME_OVER,Game Over,Гру закінчено
+LANGUAGE_LABEL,Language,Мова
+CONTROLS_HELP,"Use WASD or Arrow Keys for movement.
+J to jump. K to attack. L to interact.
+Collect as many coins as you can and avoid enemies!","Використовуйте WASD або стрілки для руху.
+J — стрибок. K — атака. L — взаємодія.
+Зберіть якомога більше монет і уникайте ворогів!"
+MENU_HINT,Arrows/Tab to move - Enter/Space/A to confirm - Esc/B to go back,Стрілки/Tab — рух - Enter/Пробіл/A — підтвердити - Esc/B — назад
+ABOUT_BODY,"Edgard in Kimeria
+
+Use WASD or Arrow Keys for movement.
+J to jump. K to attack. L to interact.
+Escape to pause.
+Collect as many coins as you can and avoid enemies!","Едгард у Кімерії
+
+Використовуйте WASD або стрілки для руху.
+J — стрибок. K — атака. L — взаємодія.
+Escape — пауза.
+Зберіть якомога більше монет і уникайте ворогів!"
