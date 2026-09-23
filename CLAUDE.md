@@ -6,6 +6,20 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 **Edgard in Kimeria** — a 2D arcade/platformer built with Godot 4.6, GL Compatibility renderer. Viewport: 640×360, pixel art aesthetic (Nearest texture filter). This is a port from a Flutter/Flame original at `../edgard_in_kimeria`.
 
+## Git identity
+
+All commits and PRs in this repo must be authored as `konter-dev <konter.dev@gmail.com>`,
+not the machine's personal git identity. Since global/local git config must never be
+changed, set it per-command instead:
+
+```
+GIT_AUTHOR_NAME="konter-dev" GIT_AUTHOR_EMAIL="konter.dev@gmail.com" \
+GIT_COMMITTER_NAME="konter-dev" GIT_COMMITTER_EMAIL="konter.dev@gmail.com" \
+git commit ...
+```
+
+`gh` is already authenticated as `konter-dev` on this machine, so PRs need no extra flags.
+
 ## Running the project
 
 Open in Godot 4.6 and press **F5**. No CLI build step — Godot manages compilation through the editor. The main scene is `scenes/game.tscn` (shows MainMenu → Start → loads forest1).
