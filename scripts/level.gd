@@ -7,9 +7,29 @@ extends Node2D
 
 func _ready() -> void:
 	add_to_group("level")
-	get_tree().debug_collisions_hint = true
+	get_tree().debug_collisions_hint = GameManager.debug_draw
 	_spawn_objects()
 	_connect_quicksand()
+
+func _process(_delta: float) -> void:
+	_update_level_time_scale()
+
+func _unhandled_input(event: InputEvent) -> void:
+	if event is InputEventKey and event.pressed and not event.echo and event.keycode == KEY_F1:
+		GameManager.debug_draw = not GameManager.debug_draw
+		get_tree().debug_collisions_hint = GameManager.debug_draw
+
+func _update_level_time_scale() -> void:
+	var player := GameManager.player
+	if player == null:
+		GameManager.level_time_scale = 1.0
+		return
+	var near_bat := false
+	for bat: Bat in get_tree().get_nodes_in_group("bat"):
+		if not bat.is_dead and bat.global_position.distance_to(player.global_position) < 50.0:
+			near_bat = true
+			break
+	GameManager.level_time_scale = 0.5 if near_bat else 1.0
 
 func _spawn_objects() -> void:
 	var player_instance: Player = null

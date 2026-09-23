@@ -16,5 +16,7 @@ func _ready() -> void:
 	shape.position = wall_size * 0.5
 
 func perform_action() -> void:
-	set_deferred("disabled", not shape.disabled)
-	visible = not visible
+	# Matches the reference: the wall opens once and stays open.
+	shape.set_deferred("disabled", true)
+	visible = false
+	call_deferred("queue_free")

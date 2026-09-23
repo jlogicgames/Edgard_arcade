@@ -11,7 +11,6 @@ const TERMINAL_VELOCITY := 300.0
 const COYOTE_TIME := 0.15
 const FALL_OFF_Y := 350.0
 
-var lives := 3
 var is_attacking := false
 var is_got_hit := false
 var is_reached_checkpoint := false
@@ -44,6 +43,8 @@ func _physics_process(delta: float) -> void:
 		move_and_slide()
 		return
 
+	delta *= GameManager.level_time_scale
+	sprite.speed_scale = GameManager.level_time_scale
 	_apply_gravity(delta)
 	_handle_coyote(delta)
 	_handle_movement()
@@ -79,7 +80,7 @@ func _handle_movement() -> void:
 		return
 	var dir := Input.get_axis("move_left", "move_right")
 	var speed_mul := 0.1 if (is_in_quicksand and not is_on_floor()) else 1.0
-	velocity.x = dir * WALK_SPEED * speed_mul
+	velocity.x = dir * WALK_SPEED * speed_mul * GameManager.level_time_scale
 	if dir > 0.0:
 		is_facing_right = true
 		sprite.flip_h = false
@@ -175,11 +176,11 @@ func _respawn() -> void:
 	velocity = Vector2.ZERO
 	sfx.stream = load("res://assets/sounds/hurt.wav")
 	sfx.play()
-	lives -= 1
-	emit_signal("life_lost", lives)
+	GameManager.lives -= 1
+	emit_signal("life_lost", GameManager.lives)
 	sprite.play("hit")
 	await sprite.animation_finished
-	if lives <= 0:
+	if GameManager.lives <= 0:
 		emit_signal("died")
 		return
 	global_position = starting_position

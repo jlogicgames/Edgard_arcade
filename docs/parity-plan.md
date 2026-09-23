@@ -134,7 +134,7 @@ and state.
 4. Re-generate both levels.
 5. Verify: `forest` shows a heart at x = 656. `forest1`'s trigger opens the wall and toggles the torch. Inspecting the markers shows the new metadata.
 
-### Phase 2: Game state and correctness bugs (P1, E1, O1, L4, U9)
+### Phase 2: Game state and correctness bugs (P1, E1, O1, L4, U9) — done
 1. Move `lives` into `GameManager`, together with `coins`, `current_level_index`, `invulnerable`, `debug_draw` and `language`. The player reads and writes lives through GameManager, and `reset()` restores them.
 2. Replace the Bat DetectionZone and `Engine.time_scale` with a per-frame "any bat within 50 px" check in `level.gd`. Scale the level's simulation only: set `process_mode` and use a custom `time_scale` factor that player and enemies multiply into `delta`, and keep `Engine.time_scale` at 1.0 (decided, E1), which also leaves UI tweens and music at normal speed.
 3. Fix `actionable_wall.gd` to disable the **shape**, and make the removal permanent (`queue_free`).

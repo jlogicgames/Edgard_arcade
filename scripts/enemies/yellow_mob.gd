@@ -24,6 +24,8 @@ func _ready() -> void:
 func _physics_process(delta: float) -> void:
 	if got_hit:
 		return
+	delta *= GameManager.level_time_scale
+	sprite.speed_scale = GameManager.level_time_scale
 
 	if not is_on_floor():
 		velocity.y = min(velocity.y + GRAVITY * delta, 300.0)
@@ -38,7 +40,7 @@ func _physics_process(delta: float) -> void:
 		elif global_position.x <= range_neg:
 			move_dir = 1.0
 
-	velocity.x = move_dir * RUN_SPEED
+	velocity.x = move_dir * RUN_SPEED * GameManager.level_time_scale
 	sprite.flip_h = move_dir < 0.0
 	move_and_slide()
 	sprite.play("run" if abs(velocity.x) > 1.0 else "idle")

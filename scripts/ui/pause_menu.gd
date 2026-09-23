@@ -15,5 +15,6 @@ func _on_resume() -> void:
 	GameManager.toggle_pause()
 
 func _on_quit() -> void:
+	GameManager.reset_state()
 	get_tree().paused = false
 	get_tree().change_scene_to_file("res://scenes/game.tscn")

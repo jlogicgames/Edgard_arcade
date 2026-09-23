@@ -15,11 +15,10 @@ func _on_body_entered(body: Node2D) -> void:
 	if is_collected or not body is Player:
 		return
 	is_collected = true
-	var player := body as Player
 	if collectable_type == "Coin":
 		GameManager.coins += 1
 		GameManager.play_sfx("res://assets/sounds/collect.wav")
 	elif collectable_type == "Heart":
-		player.lives = min(player.lives + 1, 3)
+		GameManager.lives = mini(GameManager.lives + 1, GameManager.MAX_LIVES)
 		GameManager.play_sfx("res://assets/sounds/collect.wav")
 	queue_free()
