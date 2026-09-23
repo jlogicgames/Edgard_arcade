@@ -6,6 +6,7 @@ extends StaticBody2D
 @onready var shape: CollisionShape2D = $CollisionShape2D
 
 func _ready() -> void:
+	add_to_group("wall")
 	if target_id != "":
 		add_to_group("actionable_" + target_id)
 	var rect := RectangleShape2D.new()

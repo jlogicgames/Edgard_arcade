@@ -161,9 +161,7 @@ func _connect_quicksand() -> void:
 					player.is_in_quicksand = true)
 			area.body_exited.connect(func(body: Node2D) -> void:
 				if body == player:
-					player.is_in_quicksand = false
-					if player.velocity.y > 0.0:
-						player.take_hit())
+					player.is_in_quicksand = false)
 
 func _on_player_died() -> void:
 	var go_scene := load("res://scenes/ui/game_over.tscn") as PackedScene

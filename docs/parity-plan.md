@@ -141,7 +141,7 @@ and state.
 4. Put the collision debug draw behind the F1 flag.
 5. Make pause → Exit to Menu call a full reset.
 
-### Phase 3: Player feel parity (P2–P10)
+### Phase 3: Player feel parity (P2–P10) — done
 Adjust `player.gd` constants and rules: held jump, quicksand rules, clamber only on the `wall` group, wall-jump vector, attack restrictions and movement freeze, fall-off at y = 380, and respawn facing. Keep 3 deaths (P2). Use a custom camera controller node for the look-ahead.
 
 ### Phase 4: Enemy parity (E2–E7)
